@@ -1,0 +1,97 @@
+.code-viewer-container {
+  background: #0f172a;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-header {
+  background: #1e293b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #334155;
+  padding-right: 1rem;
+}
+
+.tabs-list {
+  display: flex;
+  overflow-x: auto;
+}
+
+.file-tab {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-right: 1px solid #334155;
+  transition: all 0.2s;
+}
+
+.file-tab:hover {
+  background: #334155;
+  color: #f8fafc;
+}
+
+.file-tab.active {
+  background: #0f172a;
+  color: #38bdf8; /* Cyan-400 */
+  border-bottom: 2px solid #38bdf8; /* Highlight active */
+}
+
+.tab-icon {
+  opacity: 0.7;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.language-badge {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.copy-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-btn:hover {
+  background: #334155;
+  color: white;
+}
+
+.code-content {
+  padding: 1rem;
+  overflow-x: auto;
+  background: #0f172a;
+}
+
+.code-block {
+  margin: 0;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+}

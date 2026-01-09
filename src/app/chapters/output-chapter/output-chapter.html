@@ -1,0 +1,156 @@
+<div class="chapter-container">
+  <div class="header">
+    <span class="badge">Chapter 4</span>
+    <h1>@Output() Decorator</h1>
+    <p class="subtitle">Emitting events up from Child to Parent</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Communication Upwards</h2>
+    <p>While data flows down via <code>@Input()</code>, events flow <strong>up</strong> via <code>@Output()</code>. This allows child components to notify their parents about important actions, like button clicks or form submissions.</p>
+    
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h3>1. EventEmitter</h3>
+        <p>A specialized class used to emit custom events.</p>
+      </div>
+      <div class="concept-card">
+        <h3>2. emit()</h3>
+        <p>The method called to send the event payload.</p>
+      </div>
+      <div class="concept-card">
+        <h3>3. Binding</h3>
+        <p>Parent listens using parentheses <code>(event)="handler()"</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE 1: Simple/Void -->
+  <div class="example-block">
+    <app-interactive-demo 
+      title="1. Simple Notification" 
+      description="The child just says 'Hey, I did something!'. No data is passed."
+      [tabs]="deleteCodeTabs">
+      
+      <div class="demo-layout">
+        <!-- Child -->
+        <div class="component-box child">
+          <div class="box-label">Child</div>
+          <button (click)="onDelete()" class="emit-btn delete" [disabled]="isItemDeleted">
+            🗑️ Delete Item
+          </button>
+        </div>
+
+        <div class="connection-line">
+           <div class="up-arrow">↑</div>
+           <span class="binding-syntax">(delete)="onDelete()"</span>
+        </div>
+
+        <!-- Parent -->
+        <div class="component-box parent">
+          <div class="box-label">Parent</div>
+          <div class="display-value" [class.faded]="isItemDeleted">
+             <div class="item-card" *ngIf="!isItemDeleted">
+                <span>📦 Item #42</span>
+             </div>
+             <span *ngIf="isItemDeleted" class="deleted-msg">Item Deleted!</span>
+          </div>
+        </div>
+      </div>
+    </app-interactive-demo>
+  </div>
+
+  <!-- EXAMPLE 2: Payload -->
+  <div class="example-block">
+    <app-interactive-demo 
+      title="2. Sending Data ($event)" 
+      description="The child passes specific data (a string) up to the parent using the $event variable."
+      [tabs]="fruitCodeTabs"
+      (reset)="resetFruit()">
+      
+      <div class="demo-layout">
+        <div class="component-box child">
+          <div class="box-label">Child (Picker)</div>
+          <div class="fruit-buttons">
+            <button (click)="onFruitPicked('🍎')" class="fruit-btn">🍎</button>
+            <button (click)="onFruitPicked('🍌')" class="fruit-btn">🍌</button>
+            <button (click)="onFruitPicked('🍇')" class="fruit-btn">🍇</button>
+          </div>
+        </div>
+
+        <div class="connection-line">
+           <div class="up-arrow">↑</div>
+           <span class="binding-syntax">(picked)="val = $event"</span>
+        </div>
+
+        <div class="component-box parent">
+          <div class="box-label">Parent</div>
+          <div class="display-value">
+             <span class="big-fruit">{{ selectedFruit }}</span>
+          </div>
+        </div>
+      </div>
+    </app-interactive-demo>
+  </div>
+
+  <!-- EXAMPLE 3: Complex Object -->
+  <div class="example-block">
+    <app-interactive-demo 
+      title="3. Complex Event Objects" 
+      description="Real apps often send objects. Here the child sends ANY data structure."
+      [tabs]="voteCodeTabs"
+      (reset)="resetVote()">
+      
+      <div class="demo-layout">
+        <div class="component-box child">
+          <div class="box-label">Child (Voting Machine)</div>
+          <div class="vote-actions">
+             <button (click)="handleVote({option: 'YES', timestamp: null!})" class="vote-btn yes">Yes 👍</button>
+             <button (click)="handleVote({option: 'NO', timestamp: null!})" class="vote-btn no">No 👎</button>
+          </div>
+        </div>
+
+        <div class="connection-line">
+           <div class="up-arrow">↑</div>
+           <span class="binding-syntax">(voted)="handle($event)"</span>
+        </div>
+
+        <div class="component-box parent">
+          <div class="box-label">Parent (Tally)</div>
+          <div class="stats">
+             <div>Total Votes: <strong>{{ voteCount }}</strong></div>
+             <div *ngIf="latestVote" class="latest-log">
+                Last: <strong>{{ latestVote.option }}</strong>
+             </div>
+          </div>
+        </div>
+      </div>
+    </app-interactive-demo>
+  </div>
+
+  <div class="content-section">
+    <h2>Best Practices</h2>
+    <div class="dos-donts">
+      <div class="do-col">
+        <h3>✅ DO</h3>
+        <ul>
+          <li>Use specific event names (e.g., <code>userSaved</code>)</li>
+          <li>Type your EventEmitter: <code>EventEmitter&lt;User&gt;</code></li>
+          <li>Treat events as notifications, not imperative commands</li>
+        </ul>
+      </div>
+      <div class="dont-col">
+        <h3>❌ DON'T</h3>
+        <ul>
+          <li>Pass callback functions via @Input (React style)</li>
+          <li>Use events for data that should be a shared service</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="navigation-footer">
+    <a routerLink="/input" class="btn-secondary">← Back</a>
+    <a routerLink="/view-child" (click)="nextChapter()" class="btn-primary">Next: @ViewChild Decorator →</a>
+  </div>
+</div>

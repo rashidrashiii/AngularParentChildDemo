@@ -1,0 +1,202 @@
+<div class="chapter-container">
+  
+  <div class="hero-section">
+    <span class="intro-badge">Chapter 1</span>
+    <h1 class="chapter-title">The Communication Lab</h1>
+    <p class="chapter-subtitle">Angular components communicate in 3 distinctive ways. Let's see them in action.</p>
+  </div>
+
+  <!-- NEW: PARENT VS CHILD CONCEPT -->
+  <div class="concept-section">
+    <h2 class="section-title">First, what is a Parent & Child?</h2>
+    <div class="concept-grid">
+      <div class="concept-card parent-card">
+        <div class="icon">🏠</div>
+        <h3>The Parent</h3>
+        <p>The <strong>Container</strong>.</p>
+        <p>It hosts other components only in its HTML template.</p>
+        <div class="code-snippet">
+            &lt;div&gt;<br>
+            &nbsp;&nbsp;<strong>&lt;app-child&gt;&lt;/app-child&gt;</strong><br>
+            &lt;/div&gt;
+        </div>
+      </div>
+      
+      <div class="arrow-connector">
+         <span>Hosts</span>
+         <div class="arrow">⬇</div>
+      </div>
+
+      <div class="concept-card child-card">
+        <div class="icon">🧩</div>
+        <h3>The Child</h3>
+        <p>The <strong>Part</strong>.</p>
+        <p>It sits inside the Parent's template and does a specific job.</p>
+        <div class="code-snippet child-snippet">
+            selector: 'app-child'
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="demos-grid">
+    
+    <!-- DEMO 1: INPUT / OUTPUT -->
+    <div class="demo-card">
+      <div class="demo-header">
+        <span class="demo-icon">✉️</span>
+        <h2 class="demo-title">1. The Postal Service (@Input / @Output)</h2>
+        <p class="demo-desc">Independent entities passing messages. It takes time, and they don't control each other directly.</p>
+      </div>
+      <div class="demo-content">
+        <div class="postal-scene">
+          
+          <!-- Parent Station -->
+          <div class="station parent">
+            <div class="avatar">👨‍🍳</div>
+            <div class="desk">
+              <span class="tag parent">Parent</span>
+              
+              <div class="mailbox-container">
+                <span class="inbox-title">📥 Inbox (Events)</span>
+                <div class="letter-item" *ngFor="let mail of postalState.parentInbox">
+                  {{ mail }}
+                </div>
+                <div *ngIf="postalState.parentInbox.length === 0" style="color: #94a3b8; font-size: 0.8rem;">Empty</div>
+              </div>
+
+              <div class="action-row" style="margin-top: 1rem;">
+                <input 
+                  type="text" 
+                  class="input-postal" 
+                  placeholder="Write a letter..." 
+                  [value]="postalState.parentMessage"
+                  (input)="postalState.parentMessage = $any($event.target).value"
+                  (keyup.enter)="sendLetterToChild()"
+                >
+                <button class="btn-postal" (click)="sendLetterToChild()" [disabled]="!postalState.parentMessage">Send ⬇️</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flying Envelope -->
+          <div class="flying-envelope-container" [class.fly-down]="postalState.isLetterFlyingDown">
+             <div class="envelope-visual">📨</div>
+          </div>
+          <div class="flying-envelope-container" [class.fly-up]="postalState.isLetterFlyingUp">
+             <div class="envelope-visual">💌</div>
+          </div>
+
+          <!-- Child Station -->
+          <div class="station child">
+            <div class="avatar">👦</div>
+            <div class="desk">
+              <span class="tag child">Child</span>
+              
+              <div class="mailbox-container">
+                <span class="inbox-title">📥 Inbox (Input Data)</span>
+                <div class="letter-item" *ngFor="let mail of postalState.childInbox">
+                  {{ mail }}
+                </div>
+                <div *ngIf="postalState.childInbox.length === 0" style="color: #94a3b8; font-size: 0.8rem;">Empty</div>
+              </div>
+
+              <div class="action-row" style="margin-top: 1rem;">
+                <input 
+                  type="text" 
+                  class="input-postal" 
+                  placeholder="Reply..." 
+                  [value]="postalState.childReply"
+                  (input)="postalState.childReply = $any($event.target).value"
+                  (keyup.enter)="replyToParent()"
+                >
+                <button class="btn-postal" (click)="replyToParent()" [disabled]="!postalState.childReply">Reply ⬆️</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- DEMO 2: VIEW CHILD -->
+    <div class="demo-card">
+      <div class="demo-header">
+        <span class="demo-icon">🎮</span>
+        <h2 class="demo-title">2. The Remote Control (@ViewChild)</h2>
+        <p class="demo-desc">Parent has direct, instant control over the child instance. No polite letter writing here!</p>
+      </div>
+      <div class="demo-content">
+        <div class="remote-scene">
+          
+          <div class="remote-control">
+            <h4 style="color:white; margin-bottom:1rem; text-align:center;">PARENT REMOTE</h4>
+            <button class="remote-btn btn-shake" (click)="commandShake()">⚡ SHAKE</button>
+            <button class="remote-btn btn-happy" (click)="commandColor('happy')">🟢 BE HAPPY</button>
+            <button class="remote-btn btn-angry" (click)="commandColor('angry')">🔴 BE ANGRY</button>
+            <button class="remote-btn btn-reset" (click)="resetRobot()">↺ RESET</button>
+          </div>
+
+          <div class="robot-container">
+            <div class="robot" 
+                 [class.shaking]="remoteState.isShaking"
+                 [style.filter]="remoteState.robotColor === 'happy' ? 'hue-rotate(240deg)' : remoteState.robotColor === 'angry' ? 'hue-rotate(0deg) saturate(3)' : 'grayscale(100%)'">
+              🤖
+            </div>
+            <div class="status-screen">
+              > {{ remoteState.statusMessage }}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- DEMO 3: CONTENT CHILD -->
+    <div class="demo-card">
+      <div class="demo-header">
+        <span class="demo-icon">🎁</span>
+        <h2 class="demo-title">3. The Gift Box (@ContentChild)</h2>
+        <p class="demo-desc">Content Projection: The parent decides what goes <u>inside</u> the child's template.</p>
+      </div>
+      <div class="demo-content">
+        <div class="gift-scene">
+          
+          <div class="sticker-sheet">
+            <h4 style="margin-bottom:1rem; text-align:center;">Choose Content</h4>
+            <div class="sticker-grid">
+              <button 
+                *ngFor="let gift of availableGifts" 
+                class="sticker-btn" 
+                [class.active]="giftState.selectedGift === gift"
+                (click)="wrapGift(gift)"
+              >
+                {{ gift }}
+              </button>
+            </div>
+          </div>
+
+          <div class="child-projector">
+            <h3>Child Component</h3>
+            <p style="font-size:0.8rem; color:#64748b;">I have a slot &lt;ng-content&gt;</p>
+            
+            <div class="ng-content-slot">
+              <div *ngIf="giftState.selectedGift" class="projected-content">
+                {{ giftState.selectedGift }}
+              </div>
+              <span *ngIf="!giftState.selectedGift" style="color: #cbd5e1;">(Empty Slot)</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="final-cta">
+    <a routerLink="/communication" (click)="startLearning()" class="btn-start-course">
+      Start The Course →
+    </a>
+  </div>
+</div>

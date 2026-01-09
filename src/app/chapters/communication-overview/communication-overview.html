@@ -1,0 +1,73 @@
+<div class="chapter-container">
+  <div class="header">
+    <span class="badge">Chapter 2</span>
+    <h1>Understanding Component Communication</h1>
+    <p class="subtitle">How data flows through your application tree</p>
+  </div>
+
+  <div class="content-section">
+    <h2>The Component Tree</h2>
+    <p>Angular applications are structured as a tree of components. Data typically flows <strong>down</strong>, and events flow <strong>up</strong>.</p>
+    
+    <div class="tree-diagram">
+      <div class="node parent">
+        <span class="label">Parent Component</span>
+      </div>
+      <div class="children">
+        <div class="node child">
+          <div class="data-flow-down">
+            <span class="arrow">↓</span>
+            <span class="text">@Input (Data)</span>
+          </div>
+          <span class="label">Child Component A</span>
+        </div>
+        <div class="node child">
+          <div class="data-flow-up">
+            <span class="arrow">↑</span>
+            <span class="text">@Output (Events)</span>
+          </div>
+          <span class="label">Child Component B</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <h2>The 4 Communication Patterns</h2>
+    
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <h3>1. @Input()</h3>
+        <span class="direction down">Parent → Child</span>
+        <p><strong>Primary method for data flow.</strong> Parent binds property to child.</p>
+        <code class="mini-code">[user]="currentUser"</code>
+      </div>
+
+      <div class="pattern-card">
+        <h3>2. @Output()</h3>
+        <span class="direction up">Child → Parent</span>
+        <p><strong>Primary method for events.</strong> Child emits event, parent listens.</p>
+        <code class="mini-code">(save)="onSave($event)"</code>
+      </div>
+
+      <div class="pattern-card">
+        <h3>3. @ViewChild()</h3>
+        <span class="direction direct">Parent ↔ Child</span>
+        <p><strong>Imperative control.</strong> Parent directly accesses child instance.</p>
+        <code class="mini-code">this.child.focus()</code>
+      </div>
+
+      <div class="pattern-card">
+        <h3>4. @ContentChild()</h3>
+        <span class="direction project">Parent ⤢ Child</span>
+        <p><strong>Content Projection.</strong> Accessing content projected into component.</p>
+        <code class="mini-code">&lt;ng-content&gt;</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="navigation-footer">
+    <a routerLink="/" class="btn-secondary">← Back</a>
+    <a routerLink="/input" (click)="nextChapter()" class="btn-primary">Next: @Input Decorator →</a>
+  </div>
+</div>

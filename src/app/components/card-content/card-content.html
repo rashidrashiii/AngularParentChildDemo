@@ -1,0 +1,12 @@
+<div class="demo-card card-wrapper">
+  <h3>Card Content Component</h3>
+  <div class="projected-content">
+    <!-- ng-content is a placeholder for projected content from parent -->
+    <!-- Parent can pass ANY content here (buttons, paragraphs, other components, etc.) -->
+    <ng-content></ng-content>
+  </div>
+  <div class="info-box">
+    <p>💡 This component uses <code>ng-content</code> to project content from parent</p>
+    <p>Check console to see <code>@ContentChild</code> detection in <code>ngAfterContentInit</code></p>
+  </div>
+</div>

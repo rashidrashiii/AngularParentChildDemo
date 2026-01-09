@@ -1,0 +1,42 @@
+<div class="demo-card">
+  <div class="demo-header">
+    <div class="header-content">
+      <h3>{{ title }}</h3>
+      <p class="demo-description">{{ description }}</p>
+    </div>
+    <div class="demo-actions">
+      <button (click)="onReset()" class="reset-btn" title="Reset Demo">
+        ↺ Reset
+      </button>
+      <div class="tab-group">
+        <button 
+          (click)="activeTab = 'demo'" 
+          [class.active]="activeTab === 'demo'"
+          class="tab-btn">
+          Preview
+        </button>
+        <button 
+          (click)="activeTab = 'code'" 
+          [class.active]="activeTab === 'code'"
+          class="tab-btn">
+          Code
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="demo-content">
+    <div *ngIf="activeTab === 'demo'" class="preview-area">
+      <ng-content></ng-content>
+    </div>
+    
+    <div *ngIf="activeTab === 'code'" class="code-area">
+      <app-code-viewer 
+        [code]="code" 
+        [language]="language" 
+        [tabs]="tabs"
+        [title]="title + ' Source'">
+      </app-code-viewer>
+    </div>
+  </div>
+</div>

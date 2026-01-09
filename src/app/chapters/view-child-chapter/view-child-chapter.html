@@ -1,0 +1,95 @@
+<div class="chapter-container">
+  <div class="header">
+     <div class="badge">Chapter 5</div>
+     <h1>&#64;ViewChild</h1>
+     <p class="subtitle">Accessing Elements & Components</p>
+  </div>
+
+  <div class="content-section">
+      <p>
+          <code>&#64;ViewChild</code> is how a Parent component reaches down into its own template to grab a reference to something.
+          That "something" can be a <strong>DOM Element</strong> or a <strong>Child Component</strong>.
+      </p>
+  </div>
+
+  <!-- EXAMPLE 1: DOM Elements -->
+  <div class="example-block">
+    <app-interactive-demo 
+      title="1. Accessing DOM Elements" 
+      description="Use @ViewChild with a template variable (#name) to grab access to a native DOM element."
+      [tabs]="domCodeTabs"
+      (reset)="resetDomDemo()">
+      
+      <div class="demo-layout">
+        <div class="component-box child" [style.borderColor]="currentColor">
+          <div class="box-label">Template (DOM)</div>
+          <div class="dom-preview">
+            <!-- Hidden color input, triggered by button -->
+            <input 
+              #colorInput 
+              type="color" 
+              [value]="currentColor"
+              (input)="onColorChange($event)"
+              class="hidden-picker">
+            
+            <div class="color-swatch" [style.backgroundColor]="currentColor"></div>
+            <p>Selected: {{ currentColor }}</p>
+          </div>
+        </div>
+
+        <div class="connection-line">
+           <div class="down-arrow">↓</div>
+           <span class="binding-syntax">this.input.nativeElement</span>
+        </div>
+
+        <div class="component-box parent">
+          <div class="box-label">Parent (Controller)</div>
+          <div class="controls">
+            <button (click)="openColorPicker()" class="control-btn primary">
+              🎨 Open Picker (via Focus)
+            </button>
+          </div>
+          <p class="explanation-text">
+            Parent calls <code>.click()</code> and <code>.focus()</code> directly on the input ref.
+          </p>
+        </div>
+      </div>
+    </app-interactive-demo>
+  </div>
+
+  <!-- EXAMPLE 2: Child Components -->
+  <div class="example-block">
+    <app-interactive-demo 
+      title="2. Controlling Child Components" 
+      description="The most powerful use: Calling methods on a child component directly! Think of it like a remote control."
+      [tabs]="audioCodeTabs"
+      (reset)="resetAudioDemo()">
+      
+      <div class="demo-layout">
+        <div class="component-box child">
+          <div class="box-label">Child (AudioPlayer)</div>
+          <app-audio-player></app-audio-player>
+        </div>
+
+        <div class="connection-line">
+           <div class="down-arrow">↓</div>
+           <span class="binding-syntax">this.player.play()</span>
+        </div>
+
+        <div class="component-box parent">
+          <div class="box-label">Parent (User Interface)</div>
+          <div class="controls-grid">
+            <button (click)="playMusic()" class="control-btn success">▶ Play</button>
+            <button (click)="pauseMusic()" class="control-btn warning">⏸ Pause</button>
+            <button (click)="nextTrack()" class="control-btn primary">⏭ Next Track</button>
+          </div>
+        </div>
+      </div>
+    </app-interactive-demo>
+  </div>
+
+  <div class="navigation-footer">
+    <a routerLink="/output" class="btn-secondary">← Previous: &#64;Output</a>
+    <a (click)="nextChapter()" routerLink="/content-child" class="btn-primary">Next: &#64;ContentChild →</a>
+  </div>
+</div>

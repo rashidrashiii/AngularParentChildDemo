@@ -1,0 +1,28 @@
+<div class="code-viewer-container">
+  <div class="code-header">
+    <div class="tabs-list">
+      <button 
+        *ngFor="let tab of tabs; let i = index"
+        class="file-tab"
+        [class.active]="i === activeTabIndex"
+        (click)="setActiveTab(i)">
+        <span class="tab-icon">📄</span>
+        {{ tab.title }}
+      </button>
+    </div>
+    
+    <div class="actions">
+      <span class="language-badge" *ngIf="activeTab">{{ activeTab.language }}</span>
+      <button (click)="copyToClipboard()" class="copy-btn" title="Copy code">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <div class="code-content" *ngIf="activeTab">
+    <pre class="code-block"><code>{{ activeTab.code }}</code></pre>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="container">
+  <h1>Angular Parent-Child Communication Demo</h1>
+  <p class="subtitle">Learn the four main ways components communicate in Angular</p>
+
+  <!-- ========== @Input Demo Section ========== -->
+  <section class="demo-section">
+    <h2>1. @Input Demo - Parent to Child</h2>
+    <p class="description">
+      Parent passes data to child using property binding.
+      Click the button to see reactive updates.
+    </p>
+    
+    <div class="parent-controls">
+      <button (click)="changeUserData()" class="btn-primary">
+        Change User Data
+      </button>
+      <div class="current-values">
+        <p>Current values in parent: <strong>{{ username }}</strong> - <strong>{{ role }}</strong></p>
+      </div>
+    </div>
+
+    <!-- Passing data to child using @Input property binding -->
+    <app-child-input 
+      [username]="username" 
+      [role]="role">
+    </app-child-input>
+  </section>
+
+  <!-- ========== @Output Demo Section ========== -->
+  <section class="demo-section">
+    <h2>2. @Output Demo - Child to Parent</h2>
+    <p class="description">
+      Child emits events that parent listens to.
+      Click the button in the child component.
+    </p>
+
+    <!-- Listening to child's event using event binding -->
+    <app-child-output 
+      (messageEvent)="handleMessage($event)">
+    </app-child-output>
+
+    <div class="demo-card message-display" *ngIf="receivedMessage">
+      <h3>Message Received from Child:</h3>
+      <p class="received-message">{{ receivedMessage }}</p>
+    </div>
+  </section>
+
+  <!-- ========== @ViewChild Demo Section ========== -->
+  <section class="demo-section">
+    <h2>3. @ViewChild Demo - Parent Controls Child</h2>
+    <p class="description">
+      Parent gets a reference to child component and calls its methods.
+      This is for imperative actions, not data flow.
+    </p>
+
+    <div class="parent-controls">
+      <button (click)="focusChildInput()" class="btn-primary">
+        Focus Child Input
+      </button>
+      <button (click)="clearChildInput()" class="btn-secondary">
+        Clear Child Input
+      </button>
+    </div>
+
+    <app-child-view></app-child-view>
+  </section>
+
+  <!-- ========== @ContentChild Demo Section ========== -->
+  <section class="demo-section">
+    <h2>4. Content Projection Demo - ng-content & @ContentChild</h2>
+    <p class="description">
+      Parent projects content into child component.
+      Child can query projected content using @ContentChild.
+    </p>
+
+    <app-card-content>
+      <!-- This content is projected into the child component -->
+      <button #projectedButton class="btn-primary">
+        I'm a Projected Button!
+      </button>
+      <p class="projected-text">
+        This paragraph was also projected from the parent.
+        Check the console to see @ContentChild detection!
+      </p>
+    </app-card-content>
+  </section>
+</div>

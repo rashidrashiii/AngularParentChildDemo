@@ -1,0 +1,82 @@
+:root {
+  /* Modern Professional Palette based on Teal/Cyan */
+  --primary: #0891b2;        /* Teal 600 */
+  --primary-light: #06b6d4;  /* Cyan 500 */
+  --primary-dark: #0e7490;   /* Cyan 700 */
+  
+  --accent: #f97316;         /* Orange 500 */
+  --accent-hover: #ea580c;   /* Orange 600 */
+  
+  --success: #10b981;        /* Emerald 500 */
+  --warning: #f59e0b;        /* Amber 500 */
+  --danger: #ef4444;         /* Red 500 */
+  
+  --text-primary: #1f2937;   /* Gray 800 */
+  --text-secondary: #6b7280; /* Gray 500 */
+  
+  --bg-primary: #ffffff;     /* White */
+  --bg-secondary: #f8fafc;   /* Slate 50 */
+  --code-bg: #1e293b;        /* Slate 800 */
+  
+  --border-color: #e2e8f0;   /* Slate 200 */
+  
+  --font-heading: 'Inter', -apple-system, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-code: 'Fira Code', 'Courier New', monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  margin-top: 0;
+}
+
+/* Layout logic to accommodate sidebar */
+.main-content-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content-area {
+  flex: 1;
+  margin-left: 280px; /* Width of sidebar */
+  padding: 2rem 4rem;
+  max-width: 900px; /* Readable line length */
+}
+
+@media (max-width: 1024px) {
+  .content-area {
+    padding: 2rem;
+  }
+}
+
+/* Typography utilities */
+.text-primary { color: var(--primary); }
+.text-accent { color: var(--accent); }
+.text-success { color: var(--success); }
+
+.chapter-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+}
+
+.chapter-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+}

@@ -1,0 +1,59 @@
+<div class="chapter-container">
+  <div class="header">
+    <span class="badge">Chapter 9</span>
+    <h1>Summary & Resources</h1>
+    <p class="subtitle">A quick reference guide for your daily work</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Cheat Sheet</h2>
+    <div class="cheat-sheet-grid">
+      <div *ngFor="let item of cheatSheet" class="cheat-card">
+        <div class="card-icon">{{ item.icon }}</div>
+        <h3>{{ item.pattern }}</h3>
+        <div class="detail-row">
+          <span class="label">Syntax:</span>
+          <code class="value">{{ item.syntax }}</code>
+        </div>
+        <div class="detail-row">
+          <span class="label">Direction:</span>
+          <span class="value">{{ item.direction }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Best for:</span>
+          <span class="value">{{ item.useCase }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <h2>Where to go from here?</h2>
+    <div class="resources-list">
+      <a href="https://angular.dev/guide/components/inputs" target="_blank" class="resource-link">
+        <span class="icon">📚</span>
+        <div class="info">
+          <h3>Official Angular Documentation</h3>
+          <p>Deep dive into binding syntax and component interaction.</p>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
+      
+      <a href="https://angular.dev/guide/signals" target="_blank" class="resource-link">
+        <span class="icon">🚦</span>
+        <div class="info">
+          <h3>Learn about Signals</h3>
+          <p>The new reactive primitive that is changing how we use Inputs.</p>
+        </div>
+        <span class="arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="completion-banner">
+    <div class="congrats-icon">🎉</div>
+    <h2>Congratulations!</h2>
+    <p>You've completed the Angular Component Communication module.</p>
+    <a routerLink="/" class="btn-primary">Start Over</a>
+  </div>
+</div>

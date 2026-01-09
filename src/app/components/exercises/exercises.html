@@ -1,0 +1,40 @@
+<div class="chapter-container">
+  <div class="header">
+    <span class="badge">Chapter 8</span>
+    <h1>Hands-On Exercises</h1>
+    <p class="subtitle">Practice what you've learned before the final summary</p>
+  </div>
+
+  <div class="exercises-list">
+    <div *ngFor="let ex of exercises" class="exercise-card">
+      <div class="card-header">
+        <h3>{{ ex.title }}</h3>
+      </div>
+      <div class="card-body">
+        <p>{{ ex.description }}</p>
+        
+        <div class="actions">
+          <button (click)="toggleHint(ex.id)" class="btn-text">
+            {{ showHint[ex.id] ? 'Hide Hint' : '💡 Show Hint' }}
+          </button>
+          <button (click)="toggleSolution(ex.id)" class="btn-text">
+            {{ showSolution[ex.id] ? 'Hide Solution' : '👁️ Reveal Solution' }}
+          </button>
+        </div>
+
+        <div *ngIf="showHint[ex.id]" class="hint-box">
+          <strong>Hint:</strong> {{ ex.hint }}
+        </div>
+
+        <div *ngIf="showSolution[ex.id]" class="solution-box">
+          <pre><code>{{ ex.solution }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="navigation-footer">
+    <a routerLink="/best-practices" class="btn-secondary">← Back</a>
+    <a routerLink="/summary" (click)="nextChapter()" class="btn-primary">Next: Summary →</a>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-area">
+      <span class="logo-icon">🎓</span>
+      <h2>Angular Learn</h2>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="progress()"></div>
+      </div>
+      <span class="progress-text">{{ progress() }}% Complete</span>
+    </div>
+  </div>
+  
+  <nav class="chapter-nav">
+    <ul>
+      <li *ngFor="let chapter of chapters()">
+        <a [routerLink]="chapter.route" 
+           routerLinkActive="active" 
+           [routerLinkActiveOptions]="{exact: true}"
+           class="chapter-link">
+          <span class="chapter-status">
+            <span class="check-icon" *ngIf="chapter.isCompleted">✓</span>
+            <span class="number" *ngIf="!chapter.isCompleted">{{ chapter.id }}</span>
+          </span>
+          <span class="link-text">{{ chapter.title }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <p>Author: Rashid</p>
+  </div>
+</aside>

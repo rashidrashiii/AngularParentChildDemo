@@ -1,0 +1,101 @@
+<div class="chapter-container">
+  <div class="header">
+     <div class="badge">Chapter 6</div>
+     <h1>&#64;ContentChild</h1>
+     <p class="subtitle">Accessing Projected Content</p>
+  </div>
+
+  <div class="content-section">
+      <p>
+          While <code>&#64;ViewChild</code> looks at your <em>own</em> template, <code>&#64;ContentChild</code> looks at content
+          <strong>projected</strong> into you from the Parent (via <code>&lt;ng-content&gt;</code>).
+      </p>
+  </div>
+
+  <!-- EXAMPLE 1: Simple Projection -->
+  <div class="example-block">
+    <app-interactive-demo 
+      title="1. Multi-Slot Projection" 
+      description="The 'select' attribute lets you put content in specific places."
+      [tabs]="simpleCodeTabs">
+      
+      <div class="demo-layout">
+        <div class="component-box parent">
+          <div class="box-label">Parent Usage</div>
+          <div class="code-preview-mini">
+              &lt;app-card&gt;<br>
+              &nbsp;&nbsp;&lt;header&gt;Hello&lt;/header&gt;<br>
+              &nbsp;&nbsp;&lt;p&gt;Body&lt;/p&gt;<br>
+              &lt;/app-card&gt;
+          </div>
+        </div>
+
+        <div class="connection-line">
+           <div class="down-arrow">↓</div>
+           <span class="binding-syntax">Projection</span>
+        </div>
+
+        <div class="component-box child">
+          <div class="box-label">Child Result</div>
+          
+          <app-demo-card>
+             <header>👋 Hello World</header>
+             <p style="color: #94a3b8; margin: 0;">This paragraph was projected into the main slot.</p>
+          </app-demo-card>
+
+        </div>
+      </div>
+    </app-interactive-demo>
+  </div>
+
+  <!-- EXAMPLE 2: Interactive ContentChild -->
+  <div class="example-block">
+    <app-interactive-demo 
+      title="2. The Flight Ticket" 
+      description="The Ticket Component (Parent) checks if you have inserted a Coupon Component (Child) inside it."
+      [tabs]="ticketCodeTabs">
+      
+      <div class="demo-layout">
+        <div class="component-box parent" style="min-width: 300px;">
+          <div class="box-label">Parent Usage</div>
+          
+           <div class="controls-toolbar">
+              <label>
+                  <input type="checkbox" [checked]="hasCoupon" (change)="toggleCoupon()"> 
+                  🎟️ Apply Coupon Child?
+              </label>
+           </div>
+           
+           <div class="ticket-preview">
+              <app-ticket-card>
+                  <div class="route">NYC ✈️ LHR</div>
+                  <!-- Projected Coupon (Conditional) -->
+                  <app-coupon *ngIf="hasCoupon" code="SAVE20"></app-coupon>
+              </app-ticket-card>
+           </div>
+
+        </div>
+
+        <div class="connection-line">
+           <div class="down-arrow">↓</div>
+           <span class="binding-syntax">Projection</span>
+        </div>
+        
+        <div class="description-side">
+            <p><strong>Logic Flow:</strong></p>
+            <ol>
+                <li>You toggle the checkbox to add/remove <code>&lt;app-coupon&gt;</code>.</li>
+                <li><code>TicketCard</code> uses <code>@ContentChild</code> to find it.</li>
+                <li>If found, it reads the <code>code</code> and slashes the price!</li>
+            </ol>
+        </div>
+
+      </div>
+    </app-interactive-demo>
+  </div>
+
+  <div class="navigation-footer">
+    <a routerLink="/view-child" class="btn-secondary">← Previous: &#64;ViewChild</a>
+    <a (click)="nextChapter()" routerLink="/" class="btn-primary">Next: Summary →</a>
+  </div>
+</div>

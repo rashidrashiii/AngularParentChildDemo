@@ -1,0 +1,74 @@
+<div class="chapter-container">
+  <div class="header">
+    <span class="badge">Chapter 7</span>
+    <h1>Best Practices & Anti-Patterns</h1>
+    <p class="subtitle">Do's and Don'ts for clean architecture</p>
+  </div>
+
+  <div class="content-section">
+    <h2>Decision Flow: Which Pattern?</h2>
+    <div class="flowchart">
+      <div class="question">Start: What is your goal?</div>
+      
+      <div class="paths">
+        <div class="path">
+          <div class="arrow">↓</div>
+          <div class="label">Pass data to child</div>
+          <div class="result input">Use @Input()</div>
+        </div>
+        
+        <div class="path">
+          <div class="arrow">↓</div>
+          <div class="label">Notify parent</div>
+          <div class="result output">Use @Output()</div>
+        </div>
+        
+        <div class="path">
+          <div class="arrow">↓</div>
+          <div class="label">Call child method</div>
+          <div class="result viewchild">Use @ViewChild()</div>
+        </div>
+        
+        <div class="path">
+          <div class="arrow">↓</div>
+          <div class="label">Wrap content</div>
+          <div class="result content">Use @ContentChild()</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="comparison-grid">
+    <div class="comparison-card success">
+      <h3>✅ Best Practices</h3>
+      <ul>
+        <li><strong>Unidirectional Data Flow</strong>: Data goes down, events go up. This makes debugging predictable.</li>
+        <li><strong>Smart vs. Dumb Components</strong>: Keep child components "dumb" (presentation only) when possible.</li>
+        <li><strong>Use Signals</strong>: For more reactive @Input management (new in Angular).</li>
+        <li><strong>Type Safety</strong>: Always strictly type your EventEmitters (e.g., <code>emit&lt;User&gt;</code>).</li>
+      </ul>
+    </div>
+
+    <div class="comparison-card danger">
+      <h3>❌ Anti-Patterns</h3>
+      <ul>
+        <li><strong>Modifying Inputs</strong>: Never modify an @Input property inside the child. It will be overwritten by parent updates.</li>
+        <li><strong>Deep Coupling</strong>: Avoid parent knowing too much about child's internal structure (e.g., accessing nested properties via ViewChild).</li>
+        <li><strong>Service Abuse</strong>: Don't use a shared service for simple parent-child communication. It's overkill.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content-section highlight-box">
+    <h3>💡 Pro Tip: Input Transforms</h3>
+    <p>You can transform input data directly in the decorator!</p>
+    <div class="code-snippet">
+      <code>@Input({{ '{' }} transform: booleanAttribute {{ '}' }}) disabled = false;</code>
+    </div>
+  </div>
+
+  <div class="navigation-footer">
+    <a routerLink="/content-child" class="btn-secondary">← Back</a>
+    <a routerLink="/exercises" (click)="nextChapter()" class="btn-primary">Next: Hands-On Exercises →</a>
+  </div>
+</div>

@@ -1,0 +1,286 @@
+.chapter-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 5rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.badge {
+  background: #facc15; /* Yellow for Output */
+  color: #0f172a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 0.5rem 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: #94a3b8;
+}
+
+.content-section {
+  margin-bottom: 3rem;
+  background: rgba(30, 41, 59, 0.4);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.concept-grid {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.concept-card {
+  flex: 1;
+  background: #1e293b;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  min-width: 200px;
+}
+
+.concept-card h3 {
+  color: #facc15;
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.concept-card p {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+/* Demo specific shared with Input, but specific overrides here */
+.example-block {
+    margin-bottom: 3rem;
+}
+
+.demo-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.component-box {
+  background: #1e293b;
+  border: 2px solid #334155;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 250px;
+  min-height: 180px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.component-box.parent {
+  border-color: #38bdf8;
+}
+
+.component-box.child {
+  border-color: #facc15;
+}
+
+.box-label {
+  position: absolute;
+  top: -12px;
+  left: 1rem;
+  background: #1e293b;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.connection-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #64748b;
+}
+
+.binding-syntax {
+  font-family: monospace;
+  background: #0f172a;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #facc15; /* Output binding color */
+  margin-top: 0.5rem;
+  border: 1px dashed #334155;
+}
+
+.up-arrow {
+  font-size: 1.5rem;
+  animation: bounceUp 2s infinite;
+  color: #facc15;
+}
+
+@keyframes bounceUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Specific Demos */
+.emit-btn {
+  background: #facc15;
+  color: #0f172a;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+  transition: transform 0.1s;
+}
+
+.emit-btn:active {
+    transform: scale(0.95);
+}
+
+.emit-btn.delete {
+    background: #ef4444; 
+    color: white;
+}
+
+.display-value {
+    margin: auto;
+    text-align: center;
+    color: white;
+}
+
+.item-card {
+    background: #334155;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid #475569;
+}
+
+.deleted-msg {
+    color: #ef4444;
+    font-weight: bold;
+    animation: flash 1s;
+}
+
+@keyframes flash {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.fruit-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: auto;
+}
+
+.fruit-btn {
+    font-size: 1.5rem;
+    background: #334155;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: background 0.2s;
+}
+
+.fruit-btn:hover {
+    background: #475569;
+}
+
+.big-fruit {
+    font-size: 3rem;
+}
+
+.vote-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin: auto;
+}
+
+.vote-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    color: #0f172a;
+}
+.vote-btn.yes { background: #22c55e; }
+.vote-btn.no { background: #ef4444; color: white; }
+
+.stats {
+    margin: auto;
+    text-align: left;
+    width: 100%;
+}
+.stats div {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 0.25rem;
+}
+.stats strong { color: white; }
+
+/* Best Practices */
+.dos-donts {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.do-col, .dont-col {
+  flex: 1;
+}
+
+.do-col h3 { color: #22c55e; font-size: 1rem; margin-bottom: 1rem; }
+.dont-col h3 { color: #ef4444; font-size: 1rem; margin-bottom: 1rem; }
+
+ul { list-style: none; padding: 0; }
+li { margin-bottom: 0.5rem; color: #cbd5e1; font-size: 0.9rem; display: flex; gap: 0.5rem; }
+
+.navigation-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+  border-top: 1px solid #334155;
+  padding-top: 2rem;
+}
+
+.btn-secondary, .btn-primary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-secondary { background: #1e293b; color: #cbd5e1; }
+.btn-primary { background: #38bdf8; color: #0f172a; }

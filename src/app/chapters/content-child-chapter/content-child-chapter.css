@@ -1,0 +1,149 @@
+.chapter-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 5rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.badge {
+  background: #f472b6; /* Pink for ContentChild */
+  color: #0f172a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 0.5rem 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: #94a3b8;
+}
+
+.content-section {
+  margin-bottom: 3rem;
+  background: rgba(30, 41, 59, 0.4);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.demo-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.component-box {
+  background: #1e293b;
+  border: 2px solid #334155;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 250px;
+  min-height: 180px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.component-box.parent {
+  border-color: #38bdf8;
+}
+
+.component-box.child {
+  border-color: #f472b6; /* Pink */
+}
+
+.box-label {
+  position: absolute;
+  top: -12px;
+  left: 1rem;
+  background: #1e293b;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.connection-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #64748b;
+}
+
+.binding-syntax {
+  font-family: monospace;
+  background: #0f172a;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #f472b6;
+  margin-top: 0.5rem;
+  border: 1px dashed #334155;
+}
+
+.down-arrow {
+  font-size: 1.5rem;
+  color: #f472b6;
+}
+
+.code-preview-mini {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    background: #0f172a;
+    padding: 1rem;
+    border-radius: 6px;
+    width: 100%;
+    margin: auto;
+}
+
+.description-side {
+    width: 200px;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    background: #1e293b;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #334155;
+}
+
+.description-side li {
+    margin-bottom: 0.5rem;
+}
+
+.navigation-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+  border-top: 1px solid #334155;
+  padding-top: 2rem;
+}
+
+.btn-secondary, .btn-primary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn-secondary { background: #1e293b; color: #cbd5e1; }
+.btn-primary { background: #38bdf8; color: #0f172a; }

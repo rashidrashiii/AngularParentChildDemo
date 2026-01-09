@@ -1,0 +1,145 @@
+<div class="chapter-container">
+  <div class="header">
+    <span class="badge">Chapter 3</span>
+    <h1>@Input() Decorator</h1>
+    <p class="subtitle">Passing data down from Parent to Child</p>
+  </div>
+
+  <div class="content-section">
+    <h2>How it Works</h2>
+    <p>The <code>@Input()</code> decorator acts like a doorway, allowing data to flow <strong>into</strong> a component from its parent. It's the most common way to make components configurable and reusable.</p>
+    
+    <div class="visual-explanation">
+      <div class="flow-step">
+        <span class="step-num">1</span>
+        <p>Parent defines data</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="step-num">2</span>
+        <p>Binds to property <code>[prop]="data"</code></p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="step-num">3</span>
+        <p>Child receives via <code>@Input()</code></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE 1: Basic String -->
+  <div class="example-block">
+      <app-interactive-demo 
+        title="1. Basic String Pass" 
+        description="The simplest form of communication. Parent passes a string, Child displays it."
+        [tabs]="basicCodeTabs"
+        (reset)="resetBasic()">
+        
+        <div class="demo-layout">
+          <div class="component-box parent">
+            <div class="box-label">Parent</div>
+            <div class="form-group">
+              <label>Message:</label>
+              <input type="text" [ngModel]="basicParentData" (ngModelChange)="updateBasicData($event)" class="demo-input">
+            </div>
+          </div>
+          <div class="connection-line">
+            <span class="binding-syntax">[message]</span>
+            <div class="down-arrow">↓</div>
+          </div>
+          <div class="component-box child">
+            <div class="box-label">Child</div>
+            <div class="display-value">
+              <label>Received:</label>
+              <span class="value">{{ basicChildData }}</span>
+            </div>
+          </div>
+        </div>
+      </app-interactive-demo>
+  </div>
+
+  <!-- EXAMPLE 2: Object Pass -->
+  <div class="example-block">
+      <app-interactive-demo 
+        title="2. Passing Objects" 
+        description="Real applications often pass full objects (like a User Profile) to child components."
+        [tabs]="userCodeTabs"
+        (reset)="resetUser()">
+        
+        <div class="demo-layout">
+          <div class="component-box parent">
+            <div class="box-label">Parent (User Manager)</div>
+            <div class="form-group">
+              <label>Edit Name:</label>
+              <input type="text" [ngModel]="userProfile.name" (ngModelChange)="updateUserName($event)" class="demo-input">
+            </div>
+            <div class="object-preview">
+              <small>Current Object:</small>
+              <pre>{{ userProfile | json }}</pre>
+            </div>
+          </div>
+          <div class="connection-line">
+            <span class="binding-syntax">[user]="userProfile"</span>
+            <div class="down-arrow">↓</div>
+          </div>
+          <div class="component-box child card-style">
+            <div class="box-label">Child (User Card)</div>
+            <div class="user-card-preview">
+                <div class="avatar">{{ userProfile.avatar }}</div>
+                <div class="info">
+                    <strong>{{ userProfile.name }}</strong>
+                    <span>{{ userProfile.role }}</span>
+                </div>
+            </div>
+          </div>
+        </div>
+      </app-interactive-demo>
+  </div>
+
+  <!-- EXAMPLE 3: Interceptor Setter -->
+  <div class="example-block">
+      <app-interactive-demo 
+        title="3. Intercepting Input (Setter)" 
+        description="Use a 'setter' to validate or modify data as soon as it arrives in the Child."
+        [tabs]="interceptorCodeTabs"
+        (reset)="resetInterceptor()">
+        
+        <div class="demo-layout">
+          <div class="component-box parent">
+            <div class="box-label">Parent</div>
+            <div class="form-group">
+              <label>Set Age:</label>
+              <input type="number" [ngModel]="rawAgeInput" (ngModelChange)="updateAge($event)" class="demo-input">
+            </div>
+            <small class="hint">Try negative numbers!</small>
+          </div>
+          <div class="connection-line">
+             <span class="binding-syntax">[age]="val"</span>
+            <div class="down-arrow">↓</div>
+          </div>
+          <div class="component-box child">
+            <div class="box-label">Child (Smart Component)</div>
+            <div class="display-value">
+              <label>Internal State:</label>
+              <span class="value" [class.error]="rawAgeInput < 0">{{ processedAgeMessage }}</span>
+            </div>
+          </div>
+        </div>
+      </app-interactive-demo>
+  </div>
+
+  <div class="content-section">
+    <h2>Key Takeaways</h2>
+    <ul class="checklist">
+      <li>✅ Use for passing configuration or data <strong>down</strong> the tree.</li>
+      <li>✅ Data flow is one-way (Parent → Child).</li>
+      <li>✅ Child cannot modify the parent's data directly.</li>
+      <li>✅ Works with any data type (strings, objects, arrays, etc.).</li>
+    </ul>
+  </div>
+
+  <div class="navigation-footer">
+    <a routerLink="/communication" class="btn-secondary">← Back</a>
+    <a routerLink="/output" (click)="nextChapter()" class="btn-primary">Next: @Output Decorator →</a>
+  </div>
+</div>
