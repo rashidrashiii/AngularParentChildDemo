@@ -40,7 +40,7 @@ Follow these steps to run the project locally:
 
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/YOUR_USERNAME/angular-parent-child-demo.git
+    git clone https://github.com/rashidrashiii/AngularParentChildDemo.git
     cd angular-parent-child-demo
     ```
 
