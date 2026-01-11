@@ -1,59 +1,76 @@
-# AngularParentChildDemo
+# 🎓 Angular Parent-Child Communication Demo
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-## Development server
+An interactive, hands-on tutorial application designed to teach **Angular Component Communication** patterns. This project breaks down complex concepts into simple, real-world analogies with live demos and full code examples.
 
-To start a local development server, run:
+🔗 **Live Demo:** [https://angular-parent-child-demo.vercel.app/](https://angular-parent-child-demo.vercel.app/)
 
-```bash
-ng serve
-```
+## 🚀 Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+This project covers the four pillars of Angular component interaction:
 
-## Code scaffolding
+1.  **📬 @Input() (Parent to Child)**
+    *   **Analogy:** The Mailbox.
+    *   **Demos:** Passing simple strings, objects (User Profile), and using Setters for data interception (Age Validator).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+2.  **🔔 @Output() (Child to Parent)**
+    *   **Analogy:** The Doorbell.
+    *   **Demos:** Simple events (Delete Item), Payload events (Fruit Picker), and Complex objects (Voting System).
 
-```bash
-ng generate component component-name
-```
+3.  **📱 @ViewChild (Parent Controls Child)**
+    *   **Analogy:** The Remote Control.
+    *   **Demos:** Controlling a DOM element (Color Picker) and calling methods on a Child Component (Stopwatch).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+4.  **🖼️ @ContentChild (Content Projection)**
+    *   **Analogy:** The Picture Frame.
+    *   **Demos:** Single-slot projection, Multi-slot selection, and Smart Content inspection (Profile Card with User Badge).
 
-```bash
-ng generate --help
-```
+## 🛠️ Technology Stack
 
-## Building
+*   **Framework:** Angular (Standalone Components, Signals capable)
+*   **Styling:** Modern CSS3 (Variables, Flexbox, Grid)
+*   **Deployment:** Vercel
 
-To build the project run:
+## 📦 Getting Started
 
-```bash
-ng build
-```
+Follow these steps to run the project locally:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/angular-parent-child-demo.git
+    cd angular-parent-child-demo
+    ```
 
-## Running unit tests
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+3.  **Run the development server**
+    ```bash
+    ng serve
+    ```
+    Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-```bash
-ng test
-```
+## 📚 Learning Resources
 
-## Running end-to-end tests
+Inside the application, you'll find:
+*   **Interactive Demos**: Play with the components to see how data flows.
+*   **Code Viewer**: Toggle the "Show Code" tab to see the actual implementation (Parent HTML, Parent TS, Child TS) for every example.
+*   **Best Practices**: Tips on when to use which pattern.
 
-For end-to-end (e2e) testing, run:
+## 🤝 Contributing
 
-```bash
-ng e2e
-```
+Contributions are welcome! If you have ideas for better analogies or new demos, strictly follow these steps:
+1. Fork the project.
+2. Create feature branch (`git checkout -b feature/NewDemo`).
+3. Commit changes.
+4. Push to branch.
+5. Open a Pull Request.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 📄 License
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
