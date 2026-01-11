@@ -164,26 +164,39 @@ export class ContentChildChapterComponent implements OnInit {
   // --- Demo 1: Simple Projection ---
   simpleCodeTabs: CodeTab[] = [
     {
-      title: 'Usage (Parent)',
+      title: 'Parent HTML',
       language: 'html',
-      code: `<app-demo-card>
-  <header>My Title</header>
-  <p>Some content goes here...</p>
-</app-demo-card>`
+      code: `<!-- parent.component.html -->
+<app-card>
+  <!-- Content projected into the default slot -->
+  <header>Welcome Title</header>
+  
+  <p>This paragraph is projected into the body.</p>
+  
+  <footer>Copyright 2024</footer>
+</app-card>`,
     },
     {
-      title: 'Card Template',
+      title: 'Child HTML',
       language: 'html',
-      code: `<div class="card">
-  <ng-content select="header"></ng-content>
-  <ng-content></ng-content>
-</div>`
+      code: `<!-- child.component.html (app-card) -->
+<div class="card">
+  <div class="card-header">
+     <!-- Takes anything valid for the 'header' selector -->
+     <ng-content select="header"></ng-content>
+  </div>
+
+  <div class="card-body">
+     <!-- Takes everything else (default slot) -->
+     <ng-content></ng-content>
+  </div>
+</div>`,
     }
   ];
 
-  // --- Demo 2: Interactive ContentChild (Profile Card) ---
+  // --- Demo 2: Profile (ContentChild) ---
   currentUser = 'Alice';
-  currentRole: 'user' | 'admin' = 'admin';
+  currentRole: 'user' | 'admin' = 'user';
 
   toggleRole() {
       this.currentRole = this.currentRole === 'admin' ? 'user' : 'admin';
@@ -195,27 +208,37 @@ export class ContentChildChapterComponent implements OnInit {
 
   profileCodeTabs: CodeTab[] = [
     {
-       title: 'Usage (Parent)',
-       language: 'html',
-       code: `<app-profile-card>
-  <!-- We put the badge INSIDE the card -->
-  <app-user-badge 
+      title: 'Parent HTML',
+      language: 'html',
+      code: `<!-- parent.component.html -->
+<app-profile-card>
+   <!-- We project a UserBadge component inside -->
+   <app-user-badge 
       [name]="currentUser" 
       [role]="currentRole">
-  </app-user-badge>
-</app-profile-card>`
+   </app-user-badge>
+</app-profile-card>`,
     },
     {
-      title: 'Card Component TS',
-      language: 'typescript',
-      code: `@ContentChild(UserBadgeComponent) badge?: UserBadgeComponent;
+       title: 'Child TS',
+       language: 'typescript',
+       code: `import { Component, ContentChild, AfterContentInit } from '@angular/core';
+import { UserBadgeComponent } from './user-badge.component';
 
-ngAfterContentInit() {
-  // We can see what was projected!
-  if (this.badge?.role === 'admin') {
-     this.enableGoldMode();
+@Component({
+  selector: 'app-profile-card',
+  templateUrl: './profile-card.component.html'
+})
+export class ProfileCardComponent implements AfterContentInit {
+  // Query for the projected content (ContentChild)
+  @ContentChild(UserBadgeComponent) 
+  badge!: UserBadgeComponent;
+
+  ngAfterContentInit() {
+    // Available after content projection is finished
+    console.log('Projected badge role:', this.badge.role);
   }
-}`
+}`,
     }
   ];
 

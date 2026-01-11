@@ -23,17 +23,30 @@ export class InputChapterComponent implements OnInit {
     {
       title: 'Parent HTML',
       language: 'html',
-      code: `<// Parent passes string literal or variable
-<app-child [message]="parentData"></app-child>`
+      code: `<!-- parent.component.html -->
+<div class="parent-container">
+  <h2>Parent Component</h2>
+  
+  <!-- Pass string literal -->
+  <app-child message="Hello direct string"></app-child>
+
+  <!-- Pass variable -->
+  <app-child [message]="parentData"></app-child>
+</div>`,
     },
     {
       title: 'Child TS',
       language: 'typescript',
-      code: `@Component({...})
+      code: `import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  template: '<p>Message: {{ message }}</p>'
+})
 export class ChildComponent {
-  // Simple string input
+  // The @Input decorator marks this property as settable by the parent
   @Input() message: string = '';
-}`
+}`,
     }
   ];
 
@@ -48,23 +61,33 @@ export class ChildComponent {
     {
       title: 'Parent HTML',
       language: 'html',
-      code: `<// Parent passes an entire object
-<app-user-card [user]="currentUser"></app-user-card>`
+      code: `<!-- parent.component.html -->
+<div class="user-manager">
+  <!-- Parent passes the entire user object -->
+  <!-- Any changes to 'currentUser' in parent will flow down -->
+  <app-user-card [user]="currentUser"></app-user-card>
+</div>`,
     },
     {
       title: 'Child TS',
       language: 'typescript',
-      code: `interface User {
+      code: `import { Component, Input } from '@angular/core';
+
+export interface User {
   name: string;
   role: string;
   avatar: string;
 }
 
-@Component({...})
+@Component({
+  selector: 'app-user-card',
+  templateUrl: './user-card.component.html'
+})
 export class UserCardComponent {
-  // Input accepts the User interface
+  // Input accepts complex objects (interfaces/classes)
+  // The '!' tells TypeScript this will be set before use
   @Input() user!: User;
-}`
+}`,
     }
   ];
 
@@ -76,22 +99,32 @@ export class UserCardComponent {
     {
        title: 'Parent HTML',
        language: 'html',
-       code: `<// Parent sends a number
-<app-age-display [age]="userAge"></app-age-display>`
+       code: `<!-- parent.component.html -->
+<div class="form-control">
+   <label>Enter Age:</label>
+   <!-- Parent binds a number value -->
+   <app-age-display [age]="userAge"></app-age-display>
+</div>`,
     },
     {
       title: 'Child TS',
       language: 'typescript',
-      code: `@Component({...})
+      code: `import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-age-display',
+  template: '<p>Status: {{ _age }}</p>'
+})
 export class AgeDisplayComponent {
   private _age = 0;
 
-  // Intercept the input with a setter
+  // Use a setter to intercept values from the parent
+  // This runs every time the parent updates the value
   @Input()
   set age(val: number) {
     if (val < 0) {
       console.warn('Invalid age!');
-      this._age = 0;
+      this._age = 0; // Sanitize logic
     } else {
       this._age = val;
     }
@@ -100,7 +133,7 @@ export class AgeDisplayComponent {
   get age() {
     return this._age;
   }
-}`
+}`,
     }
   ];
 

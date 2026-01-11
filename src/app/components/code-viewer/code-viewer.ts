@@ -18,13 +18,13 @@ export class CodeViewerComponent {
   @Input() tabs: CodeTab[] = [];
   @Input() activeTabIndex = 0;
   
-  // Backward compatibility (optional, or we just migrate everything)
+  // Backward compatibility
   @Input() set code(value: string) {
     if (value) {
        this.tabs = [{ title: 'Source', code: value, language: this.language || 'typescript' }];
     }
   }
-  @Input() title: string = ''; // Used as fallback title if single code
+  @Input() title: string = ''; 
   @Input() language: string = 'typescript';
 
   get activeTab() {
@@ -41,3 +41,4 @@ export class CodeViewerComponent {
     }
   }
 }
+

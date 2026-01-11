@@ -105,39 +105,114 @@ focusInput() {
 }`
     }
   ];
-
   // Demo 2: Child Components
   @ViewChild(StopwatchComponent) stopwatch!: StopwatchComponent;
   
   stopwatchCodeTabs: CodeTab[] = [
     {
-       title: 'Parent HTML',
-       language: 'html',
-       code: `<app-stopwatch></app-stopwatch>
-<button (click)="start()">Start</button>
-<button (click)="stop()">Stop</button>`
+      title: 'Parent HTML',
+      language: 'html',
+      code: `<!-- parent.component.html -->
+<div class="control-panel">
+  <h3>Parent Controls</h3>
+  <!-- We put a template reference variable (#timer) on the child tag -->
+  <app-stopwatch #timer></app-stopwatch>
+
+  <div class="buttons">
+    <button (click)="startChildTimer()">Start</button>
+    <button (click)="stopChildTimer()">Stop</button>
+  </div>
+</div>`,
     },
     {
       title: 'Parent TS',
       language: 'typescript',
-      code: `@ViewChild(StopwatchComponent) stopwatch!: StopwatchComponent;
+      code: `import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { StopwatchComponent } from './stopwatch.component';
 
-start() {
-  this.stopwatch.start(); // Direct method call
-}
+@Component({
+  selector: 'app-parent',
+  templateUrl: './parent.component.html'
+})
+export class ParentComponent implements AfterViewInit {
+  // Query the child component using its class
+  @ViewChild(StopwatchComponent) 
+  stopwatch!: StopwatchComponent;
 
-stop() {
-  this.stopwatch.stop();
-}`
+  ngAfterViewInit() {
+    // Child is fully available here
+    console.log(this.stopwatch);
+  }
+
+  startChildTimer() {
+    // Call methods on the child instance directly!
+    this.stopwatch.start();
+  }
+
+  stopChildTimer() {
+    this.stopwatch.stop();
+  }
+}`,
     },
     {
       title: 'Child TS',
       language: 'typescript',
-      code: `@Component({...})
+      code: `import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-stopwatch',
+  template: '<h2>{{ time }}</h2>'
+})
 export class StopwatchComponent {
-  start() { ... }
-  stop() { ... }
-}`
+  time = 0;
+  intervalId: any;
+
+  // This method is called by the parent
+  start() {
+    if (this.intervalId) return;
+    this.intervalId = setInterval(() => this.time++, 1000);
+  }
+
+  stop() {
+    clearInterval(this.intervalId);
+    this.intervalId = null;
+  }
+}`,
+    }
+  ];
+
+  // DOM Demo
+  colorCodeTabs: CodeTab[] = [
+    {
+      title: 'Parent HTML',
+      language: 'html',
+      code: `<!-- parent.component.html -->
+<div>
+   <!-- A plain HTML element with a reference variable #box -->
+   <div #box class="color-box"></div>
+   
+   <button (click)="changeColor()">Change Color</button>
+</div>`,
+    },
+    {
+      title: 'Parent TS',
+      language: 'typescript',
+      code: `import { Component, ViewChild, ElementRef } from '@angular/core';
+
+@Component({ ... })
+export class ParentComponent {
+  // Query for the DOM element. The type is ElementRef.
+  @ViewChild('box') 
+  boxRef!: ElementRef<HTMLDivElement>;
+
+  changeColor() {
+    // Access the native DOM element
+    const div = this.boxRef.nativeElement;
+    
+    div.style.backgroundColor = 'purple';
+    div.innerHTML = 'Clicked!';
+  }
+}`,
     }
   ];
 

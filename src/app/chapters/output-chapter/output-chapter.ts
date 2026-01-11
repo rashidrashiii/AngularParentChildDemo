@@ -22,21 +22,33 @@ export class OutputChapterComponent implements OnInit {
     {
       title: 'Parent HTML',
       language: 'html',
-      code: `<// Parent listens to the event
-<app-delete-button (delete)="onDelete()"></app-delete-button>`
+      code: `<!-- parent.component.html -->
+<div class="list-container">
+   <!-- Listen for the (delete) event emitted by the child -->
+   <!-- When it fires, run onDelete() method in parent -->
+   <app-child-item 
+      (delete)="onDelete()">
+   </app-child-item>
+</div>`,
     },
     {
       title: 'Child TS',
       language: 'typescript',
-      code: `@Component({...})
-export class DeleteButtonComponent {
-  // Output with void (no data)
+      code: `import { Component, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-child-item',
+  template: '<button (click)="handleDelete()">Delete Me</button>'
+})
+export class ChildItemComponent {
+  // 1. Create the emitter
   @Output() delete = new EventEmitter<void>();
 
-  onClick() {
+  handleDelete() {
+    // 2. Emit the event up to the parent
     this.delete.emit();
   }
-}`
+}`,
     }
   ];
 
@@ -47,21 +59,37 @@ export class DeleteButtonComponent {
     {
       title: 'Parent HTML',
       language: 'html',
-      code: `<// Parent receives data via $event
-<app-fruit-picker (picked)="onFruitPicked($event)"></app-fruit-picker>`
+      code: `<!-- parent.component.html -->
+<div>
+   <h3>Selected: {{ selectedFruit }}</h3>
+   
+   <!-- The $event variable allows access to the emitted data -->
+   <app-fruit-picker 
+      (picked)="selectedFruit = $event">
+   </app-fruit-picker>
+</div>`,
     },
     {
       title: 'Child TS',
       language: 'typescript',
-      code: `@Component({...})
+      code: `import { Component, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-fruit-picker',
+  template: \`
+    <button (click)="pick('🍎')">🍎</button>
+    <button (click)="pick('🍌')">🍌</button>
+  \`
+})
 export class FruitPickerComponent {
-  // Output sends a string
+  // Emitter that sends a string payload
   @Output() picked = new EventEmitter<string>();
 
   pick(fruit: string) {
+    // Emit the specific string
     this.picked.emit(fruit);
   }
-}`
+}`,
     }
   ];
 
@@ -73,28 +101,41 @@ export class FruitPickerComponent {
     {
        title: 'Parent HTML',
        language: 'html',
-       code: `<// Parent receives complex object
-<app-vote-machine (voted)="handleVote($event)"></app-vote-machine>`
+       code: `<!-- parent.component.html -->
+<div class="voting-booth">
+   <p>Total Votes: {{ voteCount }}</p>
+   
+   <!-- Handle the event with a method, passing $event -->
+   <app-voter (voted)="handleVote($event)"></app-voter>
+</div>`,
     },
      {
       title: 'Child TS',
       language: 'typescript',
-      code: `interface VoteEvent {
-  option: string;
+      code: `import { Component, Output, EventEmitter } from '@angular/core';
+
+// Define the shape of the event data
+export interface VoteEvent {
+  option: 'YES' | 'NO';
   timestamp: Date;
 }
 
-@Component({...})
-export class VoteMachineComponent {
+@Component({
+  selector: 'app-voter',
+  templateUrl: './voter.component.html'
+})
+export class VoterComponent {
   @Output() voted = new EventEmitter<VoteEvent>();
 
-  voteYes() {
-    this.voted.emit({ 
-      option: 'YES', 
-      timestamp: new Date() 
-    });
+  castVote(option: 'YES' | 'NO') {
+    const payload: VoteEvent = {
+      option: option,
+      timestamp: new Date()
+    };
+    
+    this.voted.emit(payload);
   }
-}`
+}`,
     }
   ];
 
