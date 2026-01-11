@@ -61,27 +61,29 @@
   <div class="example-block">
     <app-interactive-demo 
       title="2. Controlling Child Components" 
-      description="The most powerful use: Calling methods on a child component directly! Think of it like a remote control."
-      [tabs]="audioCodeTabs"
-      (reset)="resetAudioDemo()">
+      description="The most powerful use: Parent calls start() and stop() methods directly on the child!"
+      [tabs]="stopwatchCodeTabs"
+      (reset)="resetTimerDemo()">
       
       <div class="demo-layout">
         <div class="component-box child">
-          <div class="box-label">Child (AudioPlayer)</div>
-          <app-audio-player></app-audio-player>
+          <div class="box-label">Child (Stopwatch)</div>
+          <div style="display:flex; justify-content:center; align-items:center; height:100%;">
+              <app-stopwatch></app-stopwatch>
+          </div>
         </div>
 
         <div class="connection-line">
            <div class="down-arrow">↓</div>
-           <span class="binding-syntax">this.player.play()</span>
+           <span class="binding-syntax">this.stopwatch.start()</span>
         </div>
 
         <div class="component-box parent">
           <div class="box-label">Parent (User Interface)</div>
           <div class="controls-grid">
-            <button (click)="playMusic()" class="control-btn success">▶ Play</button>
-            <button (click)="pauseMusic()" class="control-btn warning">⏸ Pause</button>
-            <button (click)="nextTrack()" class="control-btn primary">⏭ Next Track</button>
+            <button (click)="startStopwatch()" class="control-btn success">▶ Start Timer</button>
+            <button (click)="stopStopwatch()" class="control-btn warning">⏸ Stop Timer</button>
+            <button (click)="resetStopwatch()" class="control-btn primary">↺ Reset</button>
           </div>
         </div>
       </div>

@@ -5,115 +5,115 @@ import { ChapterService } from '../../services/chapter';
 import { InteractiveDemoComponent } from '../../components/interactive-demo/interactive-demo';
 import { CodeTab } from '../../components/code-viewer/code-viewer';
 
-// --- Helper: Coupon (The Data) ---
+// --- Helper: Child Content (The Badge) ---
 @Component({
-  selector: 'app-coupon',
-  standalone: true,
-  template: `
-    <div class="coupon-tag">
-       ✂️ {{ code }}
-    </div>
-  `,
-  styles: [`
-    .coupon-tag {
-        display: inline-block;
-        background: #fdf2f8; /* pink-50 */
-        color: #db2777; /* pink-600 */
-        border: 1px dashed #db2777;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        font-weight: bold;
-        margin-top: 0.5rem;
-    }
-  `]
-})
-export class CouponComponent {
-  @Input() code = '';
-}
-
-// --- Helper: Ticket Card (The Host) ---
-@Component({
-  selector: 'app-ticket-card',
+  selector: 'app-user-badge',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="ticket">
-       <div class="ticket-header">
-         <ng-content select=".route"></ng-content>
+    <div class="user-badge" [class.admin]="role === 'admin'">
+       <span class="avatar">{{ role === 'admin' ? '🛡️' : '👤' }}</span>
+       <span class="name">{{ name }}</span>
+       <span class="role-tag" *ngIf="role === 'admin'">ADMIN</span>
+    </div>
+  `,
+  styles: [`
+    .user-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: #f1f5f9;
+        border-radius: 50px;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        font-weight: 500;
+    }
+    .user-badge.admin {
+        background: #fffbeb; /* yellow-50 */
+        border-color: #fcd34d; /* yellow-300 */
+        color: #b45309; /* yellow-700 */
+    }
+    .role-tag {
+        font-size: 0.6rem;
+        background: #fcd34d;
+        color: #78350f;
+        padding: 0.1rem 0.3rem;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+  `]
+})
+export class UserBadgeComponent {
+  @Input() name = 'Guest';
+  @Input() role: 'user' | 'admin' = 'user';
+}
+
+// --- Helper: Parent Container (The Card) ---
+@Component({
+  selector: 'app-profile-card',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <div class="profile-card" [class.gold-border]="role === 'admin'">
+       <div class="card-header">
+         User Profile
        </div>
-       <div class="ticket-body">
-         <div class="price-row">
-            <span>Total:</span>
-            <div class="prices">
-                <span class="original-price" [class.crossed]="!!coupon">
-                    $500
-                </span>
-                <span class="discount-price" *ngIf="coupon">
-                    $400
-                </span>
-            </div>
-         </div>
-         
-         <!-- We project the coupon visual here too, just so you see it -->
-         <ng-content select="app-coupon"></ng-content>
+       <div class="card-body">
+         <!-- We project the badge here -->
+         <ng-content></ng-content>
        </div>
-       
-       <div class="msg" *ngIf="coupon">
-          ✅ Coupon Applied: {{ coupon.code }}
+       <div class="card-footer" *ngIf="role === 'admin'">
+          👑 Gold Member Benefits Active
        </div>
     </div>
   `,
   styles: [`
-    .ticket {
+    .profile-card {
       background: white;
-      color: #0f172a;
-      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
       overflow: hidden;
       width: 100%;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
     }
-    .ticket-header {
-        background: #38bdf8;
-        padding: 0.75rem;
+    .profile-card.gold-border {
+        border-color: #f59e0b; /* Amber 500 */
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+    }
+    .card-header {
+        background: #f8fafc;
+        padding: 0.75rem 1rem;
+        font-size: 0.8rem;
         font-weight: bold;
-        color: white;
+        color: #64748b;
+        border-bottom: 1px solid #e2e8f0;
     }
-    .ticket-body {
-        padding: 1rem;
-    }
-    .price-row {
+    .card-body {
+        padding: 1.5rem;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
+        justify-content: center;
     }
-    .original-price.crossed {
-        text-decoration: line-through;
-        color: #94a3b8;
-        font-size: 0.9rem;
-    }
-    .discount-price {
-        color: #22c55e;
-        font-size: 1.2rem;
-        margin-left: 0.5rem;
-    }
-    .msg {
-        background: #ecfdf5;
-        color: #166534;
+    .card-footer {
+        background: #fffbeb;
+        color: #b45309;
         font-size: 0.75rem;
         padding: 0.5rem;
         text-align: center;
+        border-top: 1px solid #fef3c7;
     }
   `]
 })
-export class TicketCardComponent implements AfterContentInit {
-  // Query for the projected CouponComponent
-  @ContentChild(CouponComponent) coupon?: CouponComponent;
+export class ProfileCardComponent implements AfterContentInit {
+  // Query for the projected UserBadgeComponent
+  @ContentChild(UserBadgeComponent) badge?: UserBadgeComponent;
+  role = 'user';
 
   ngAfterContentInit() {
     // ContentChild is queryable here
+    if (this.badge) {
+        this.role = this.badge.role;
+    }
   }
 }
 
@@ -154,7 +154,7 @@ export class DemoCardComponent {}
 // --- Main Chapter Component ---
 @Component({
   selector: 'app-content-child-chapter',
-  imports: [CommonModule, RouterLink, InteractiveDemoComponent, TicketCardComponent, CouponComponent, DemoCardComponent],
+  imports: [CommonModule, RouterLink, InteractiveDemoComponent, ProfileCardComponent, UserBadgeComponent, DemoCardComponent],
   templateUrl: './content-child-chapter.html',
   styleUrl: './content-child-chapter.css'
 })
@@ -181,32 +181,41 @@ export class ContentChildChapterComponent implements OnInit {
     }
   ];
 
-  // --- Demo 2: Interactive ContentChild (Flight Ticket) ---
-  hasCoupon = false;
+  // --- Demo 2: Interactive ContentChild (Profile Card) ---
+  currentUser = 'Alice';
+  currentRole: 'user' | 'admin' = 'admin';
 
-  toggleCoupon() {
-      this.hasCoupon = !this.hasCoupon;
+  toggleRole() {
+      this.currentRole = this.currentRole === 'admin' ? 'user' : 'admin';
   }
 
-  ticketCodeTabs: CodeTab[] = [
+  changeUser() {
+      this.currentUser = this.currentUser === 'Alice' ? 'Bob' : 'Alice';
+  }
+
+  profileCodeTabs: CodeTab[] = [
     {
        title: 'Usage (Parent)',
        language: 'html',
-       code: `<app-ticket-card>
-  <div class="route">NYC -> LHR</div>
-  
-  <!-- Projected Conditionally -->
-  <app-coupon *ngIf="hasCoupon" code="SAVE20">
-  </app-coupon>
-</app-ticket-card>`
+       code: `<app-profile-card>
+  <!-- We put the badge INSIDE the card -->
+  <app-user-badge 
+      [name]="currentUser" 
+      [role]="currentRole">
+  </app-user-badge>
+</app-profile-card>`
     },
     {
-      title: 'Ticket Component TS',
+      title: 'Card Component TS',
       language: 'typescript',
-      code: `@ContentChild(CouponComponent) coupon?: CouponComponent;
+      code: `@ContentChild(UserBadgeComponent) badge?: UserBadgeComponent;
 
-// Now we can access properties of the projected component!
-// e.g. this.coupon.code`
+ngAfterContentInit() {
+  // We can see what was projected!
+  if (this.badge?.role === 'admin') {
+     this.enableGoldMode();
+  }
+}`
     }
   ];
 

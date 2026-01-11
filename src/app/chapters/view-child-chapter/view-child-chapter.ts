@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, AfterViewInit, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ChapterService } from '../../services/chapter';
@@ -7,88 +7,75 @@ import { CodeTab } from '../../components/code-viewer/code-viewer';
 
 // --- Helper Component for Demo 2 ---
 @Component({
-  selector: 'app-audio-player',
+  selector: 'app-stopwatch',
   standalone: true,
+  imports: [CommonModule],
   template: `
-    <div class="player-display">
-      <div class="track-info">
-        <span class="icon">{{ isPlaying ? '🔊' : '🔇' }}</span>
-        <span class="text">{{ currentTrack }}</span>
-      </div>
-      <div class="progress-bar">
-        <div class="fill" [style.width.%]="progress"></div>
-      </div>
+    <div class="stopwatch-display">
+       {{ formattedTime }}
     </div>
   `,
   styles: [`
-    .player-display {
+    .stopwatch-display {
       background: #0f172a;
-      border: 2px solid #334155;
+      border: 4px solid #334155;
       color: #38bdf8;
-      padding: 1rem;
-      border-radius: 8px;
+      padding: 1.5rem;
+      border-radius: 50%;
       text-align: center;
-      width: 100%;
+      width: 150px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Courier New', monospace;
+      font-size: 2rem;
+      font-weight: bold;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      transition: border-color 0.3s, color 0.3s;
     }
-    .track-info {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-        font-family: monospace;
-    }
-    .progress-bar {
-        height: 6px;
-        background: #1e293b;
-        border-radius: 3px;
-        overflow: hidden;
-    }
-    .fill {
-        height: 100%;
-        background: #38bdf8;
-        transition: width 0.2s linear;
+    .running {
+        border-color: #38bdf8;
+        color: #e0f2fe;
     }
   `]
 })
-export class AudioPlayerComponent {
-  isPlaying = false;
-  currentTrack = 'Track 1';
-  progress = 0;
+export class StopwatchComponent {
+  seconds = 0;
+  isRunning = false;
   private intervalId: any;
+  cdr = inject(ChangeDetectorRef);
 
-  play() {
-    if (this.isPlaying) return;
-    this.isPlaying = true;
+  start() {
+    if (this.isRunning) return;
+    this.isRunning = true;
     this.intervalId = setInterval(() => {
-        this.progress += 5;
-        if (this.progress > 100) this.progress = 0;
-    }, 200);
+        this.seconds++;
+        this.cdr.markForCheck();
+    }, 100);
   }
 
-  pause() {
-    this.isPlaying = false;
+  stop() {
+    this.isRunning = false;
     clearInterval(this.intervalId);
-  }
-
-  setTrack(trackName: string) {
-    this.currentTrack = trackName;
-    this.progress = 0;
-    // Auto play new track
-    this.pause(); 
-    this.play();
+    this.cdr.markForCheck();
   }
 
   reset() {
-      this.pause();
-      this.progress = 0;
-      this.currentTrack = 'Track 1';
+      this.stop();
+      this.seconds = 0;
+      this.cdr.markForCheck();
+  }
+
+  get formattedTime() {
+      return (this.seconds / 10).toFixed(1);
   }
 }
 
 // --- Main Chapter Component ---
 @Component({
   selector: 'app-view-child-chapter',
-  imports: [CommonModule, RouterLink, InteractiveDemoComponent, AudioPlayerComponent],
+  imports: [CommonModule, RouterLink, InteractiveDemoComponent, StopwatchComponent],
   templateUrl: './view-child-chapter.html',
   styleUrl: './view-child-chapter.css'
 })
@@ -120,40 +107,36 @@ focusInput() {
   ];
 
   // Demo 2: Child Components
-  @ViewChild(AudioPlayerComponent) player!: AudioPlayerComponent;
+  @ViewChild(StopwatchComponent) stopwatch!: StopwatchComponent;
   
-  audioCodeTabs: CodeTab[] = [
+  stopwatchCodeTabs: CodeTab[] = [
     {
        title: 'Parent HTML',
        language: 'html',
-       code: `<app-audio-player></app-audio-player>
-<button (click)="playMusic()">Play</button>
-<button (click)="nextTrack()">Next</button>`
+       code: `<app-stopwatch></app-stopwatch>
+<button (click)="start()">Start</button>
+<button (click)="stop()">Stop</button>`
     },
     {
       title: 'Parent TS',
       language: 'typescript',
-      code: `@ViewChild(AudioPlayerComponent) player!: AudioPlayerComponent;
+      code: `@ViewChild(StopwatchComponent) stopwatch!: StopwatchComponent;
 
-playMusic() {
-  this.player.play(); // Direct control!
+start() {
+  this.stopwatch.start(); // Direct method call
 }
 
-nextTrack() {
-  this.player.setTrack('Next Song');
+stop() {
+  this.stopwatch.stop();
 }`
     },
     {
       title: 'Child TS',
       language: 'typescript',
       code: `@Component({...})
-export class AudioPlayerComponent {
-  isPlaying = false;
-
-  play() {
-    this.isPlaying = true;
-    // ... start audio logic
-  }
+export class StopwatchComponent {
+  start() { ... }
+  stop() { ... }
 }`
     }
   ];
@@ -186,17 +169,12 @@ export class AudioPlayerComponent {
   }
 
   // Demo 2 Logic
-  playMusic() { this.player.play(); }
-  pauseMusic() { this.player.pause(); }
-  nextTrack() { 
-      const tracks = ['Track 1', 'Track 2', 'Track 3'];
-      const currentIdx = tracks.indexOf(this.player.currentTrack);
-      const nextIdx = (currentIdx + 1) % tracks.length;
-      this.player.setTrack(tracks[nextIdx]);
-  }
+  startStopwatch() { this.stopwatch.start(); }
+  stopStopwatch() { this.stopwatch.stop(); }
+  resetStopwatch() { this.stopwatch.reset(); }
 
-  resetAudioDemo() {
-    this.player.reset();
+  resetTimerDemo() {
+    this.stopwatch.reset();
   }
 
   nextChapter() {

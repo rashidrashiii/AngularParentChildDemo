@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ChapterService } from '../../services/chapter';
 
@@ -11,6 +11,7 @@ import { ChapterService } from '../../services/chapter';
 })
 export class IntroductionComponent implements OnInit {
   chapterService = inject(ChapterService);
+  cdr = inject(ChangeDetectorRef);
 
   // --- Demo 1: The Postal Service (Input/Output) ---
   postalState = {
@@ -23,20 +24,23 @@ export class IntroductionComponent implements OnInit {
     isLetterFlyingUp: false
   };
 
-  // --- Demo 2: The Remote Control (ViewChild) ---
-  remoteState = {
-    isShaking: false,
-    robotColor: 'neutral', // neutral, happy, angry
-    statusMessage: 'Ready for commands...'
+  // --- Demo 2: The Timer (ViewChild) ---
+  timerState = {
+    time: 0,
+    isRunning: false,
+    intervalId: null as any
   };
 
-  // --- Demo 3: The Gift Box (ContentChild) ---
-  giftState = {
-    selectedGift: null as string | null,
-    isBoxOpen: false
+  // --- Demo 3: The Picture Frame (ContentChild) ---
+  frameState = {
+    selectedPhoto: null as string | null
   };
 
-  availableGifts = ['🍎', '🧸', '⚽', '🎸'];
+  availablePhotos = [
+    { id: 'mountain', label: 'Mountain', emoji: '🏔️' },
+    { id: 'ocean', label: 'Ocean', emoji: '🌊' },
+    { id: 'city', label: 'City', emoji: '🏙️' }
+  ];
 
   constructor() {}
 
@@ -61,6 +65,7 @@ export class IntroductionComponent implements OnInit {
     setTimeout(() => {
       this.postalState.isLetterFlyingDown = false;
       this.postalState.childInbox.push(messageToSend);
+      this.cdr.detectChanges();
     }, 1500); // 1.5s flight time
   }
 
@@ -74,39 +79,41 @@ export class IntroductionComponent implements OnInit {
     setTimeout(() => {
       this.postalState.isLetterFlyingUp = false;
       this.postalState.parentInbox.push(messageToSend);
+      this.cdr.detectChanges();
     }, 1500);
   }
 
-  // Remote Methods
-  commandShake() {
-    this.remoteState.statusMessage = 'Executing: SHAKE command...';
-    this.remoteState.isShaking = true;
-    setTimeout(() => {
-      this.remoteState.isShaking = false;
-      this.remoteState.statusMessage = 'Command complete.';
-    }, 800);
-  }
-
-  commandColor(color: string) {
-    this.remoteState.statusMessage = `Executing: CHANGE_COLOR(${color}) command...`;
-    this.remoteState.robotColor = color;
-  }
-
-  resetRobot() {
-    this.remoteState.isShaking = false;
-    this.remoteState.robotColor = 'neutral';
-    this.remoteState.statusMessage = 'Robot reset.';
-  }
-
-  // Gift Methods
-  wrapGift(gift: string) {
-    this.giftState.isBoxOpen = false; // Reset
-    setTimeout(() => {
-        this.giftState.selectedGift = gift;
+  // Timer Methods (ViewChild Logic)
+  startTimer() {
+    if (this.timerState.isRunning) return;
+    
+    this.timerState.isRunning = true;
+    this.timerState.intervalId = setInterval(() => {
+      this.timerState.time++;
+      this.cdr.detectChanges();
     }, 100);
   }
 
-  openGiftBox() {
-    this.giftState.isBoxOpen = true;
+  stopTimer() {
+    this.timerState.isRunning = false;
+    clearInterval(this.timerState.intervalId);
+  }
+
+  resetTimer() {
+    this.stopTimer();
+    this.timerState.time = 0;
+  }
+
+  get formattedTime() {
+    return (this.timerState.time / 10).toFixed(1) + 's';
+  }
+
+  // Frame Methods (ContentChild Logic)
+  selectPhoto(photoId: string) {
+    this.frameState.selectedPhoto = photoId;
+  }
+  
+  getPhotoEmoji(id: string | null) {
+      return this.availablePhotos.find(p => p.id === id)?.emoji;
   }
 }

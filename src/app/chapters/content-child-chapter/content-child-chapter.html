@@ -51,42 +51,48 @@
   <!-- EXAMPLE 2: Interactive ContentChild -->
   <div class="example-block">
     <app-interactive-demo 
-      title="2. The Flight Ticket" 
-      description="The Ticket Component (Parent) checks if you have inserted a Coupon Component (Child) inside it."
-      [tabs]="ticketCodeTabs">
+      title="2. The Profile Card" 
+      description="The Profile Card (Parent) inspects the User Badge (Child) you put inside it. If it sees an Admin, it upgrades the style!"
+      [tabs]="profileCodeTabs">
       
       <div class="demo-layout">
         <div class="component-box parent" style="min-width: 300px;">
           <div class="box-label">Parent Usage</div>
           
-           <div class="controls-toolbar">
-              <label>
-                  <input type="checkbox" [checked]="hasCoupon" (change)="toggleCoupon()"> 
-                  🎟️ Apply Coupon Child?
-              </label>
+           <div class="controls-toolbar" style="margin-bottom:1rem; display:flex; gap:0.5rem;">
+              <button (click)="changeUser()" class="control-btn primary">
+                 Change Name ({{ currentUser }})
+              </button>
+              <button (click)="toggleRole()" class="control-btn" 
+                [class.warning]="currentRole === 'user'"
+                [class.success]="currentRole === 'admin'">
+                 Toggle Role ({{ currentRole | uppercase }})
+              </button>
            </div>
            
-           <div class="ticket-preview">
-              <app-ticket-card>
-                  <div class="route">NYC ✈️ LHR</div>
-                  <!-- Projected Coupon (Conditional) -->
-                  <app-coupon *ngIf="hasCoupon" code="SAVE20"></app-coupon>
-              </app-ticket-card>
+           <div class="profile-preview">
+              <app-profile-card>
+                  <!-- Projected Child -->
+                  <app-user-badge 
+                      [name]="currentUser" 
+                      [role]="currentRole">
+                  </app-user-badge>
+              </app-profile-card>
            </div>
 
         </div>
 
         <div class="connection-line">
            <div class="down-arrow">↓</div>
-           <span class="binding-syntax">Projection</span>
+           <span class="binding-syntax">Projection + Query</span>
         </div>
         
         <div class="description-side">
             <p><strong>Logic Flow:</strong></p>
             <ol>
-                <li>You toggle the checkbox to add/remove <code>&lt;app-coupon&gt;</code>.</li>
-                <li><code>TicketCard</code> uses <code>@ContentChild</code> to find it.</li>
-                <li>If found, it reads the <code>code</code> and slashes the price!</li>
+                <li>You project <code>&lt;app-user-badge&gt;</code> into the Card.</li>
+                <li>The Card uses <code>@ContentChild</code> to read the <code>role</code> property.</li>
+                <li>If <code>role === 'admin'</code>, the Card adds a gold border and footer!</li>
             </ol>
         </div>
 
@@ -96,6 +102,6 @@
 
   <div class="navigation-footer">
     <a routerLink="/view-child" class="btn-secondary">← Previous: &#64;ViewChild</a>
-    <a (click)="nextChapter()" routerLink="/" class="btn-primary">Next: Summary →</a>
+    <a (click)="nextChapter()" routerLink="/best-practices" class="btn-primary">Next: Best Practices →</a>
   </div>
 </div>

@@ -24,7 +24,7 @@
 h1 {
   font-size: 3rem;
   margin: 0.5rem 0;
-  background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -37,10 +37,11 @@ h1 {
 
 .content-section {
   margin-bottom: 3rem;
-  background: rgba(30, 41, 59, 0.4);
+  background: #1e293b; /* Solid dark slate */
   padding: 2rem;
   border-radius: 12px;
-  border: 1px solid rgba(148, 163, 184, 0.1);
+  border: 1px solid #334155;
+  color: #cbd5e1;
 }
 
 .demo-layout {
@@ -114,6 +115,7 @@ h1 {
     border-radius: 6px;
     width: 100%;
     margin: auto;
+    box-sizing: border-box; /* Fix for overflow */
 }
 
 .description-side {
@@ -147,3 +149,45 @@ h1 {
 
 .btn-secondary { background: #1e293b; color: #cbd5e1; }
 .btn-primary { background: #38bdf8; color: #0f172a; }
+
+.profile-preview {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* Control Buttons */
+.control-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s;
+    font-size: 0.9rem;
+    background: #334155;
+    color: #cbd5e1;
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+.control-btn.primary {
+    background: #38bdf8;
+    color: #0f172a;
+}
+
+.control-btn.primary:hover {
+    background: #0ea5e9;
+}
+
+.control-btn.warning {
+    background: #eab308;
+    color: #0f172a;
+}
+
+.control-btn.success {
+    background: #22c55e;
+    color: #0f172a;
+}

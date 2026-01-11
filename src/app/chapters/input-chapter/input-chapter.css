@@ -24,7 +24,7 @@
 h1 {
   font-size: 3rem;
   margin: 0.5rem 0;
-  background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -37,10 +37,16 @@ h1 {
 
 .content-section {
   margin-bottom: 3rem;
-  background: rgba(30, 41, 59, 0.4);
+  background: #1e293b; /* Solid dark slate */
   padding: 2rem;
   border-radius: 12px;
-  border: 1px solid rgba(148, 163, 184, 0.1);
+  border: 1px solid #334155;
+  color: #cbd5e1; /* Ensure body text is light */
+}
+
+.content-section h2 {
+    color: #f8fafc; /* White heading */
+    margin-bottom: 1rem;
 }
 
 .visual-explanation {
@@ -141,6 +147,7 @@ h1 {
 
 .demo-input {
   width: 100%;
+  box-sizing: border-box; /* Fix for overflow */
   padding: 0.75rem;
   background: #0f172a;
   border: 1px solid #334155;

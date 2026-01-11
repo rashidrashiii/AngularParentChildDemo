@@ -122,29 +122,29 @@
     <!-- DEMO 2: VIEW CHILD -->
     <div class="demo-card">
       <div class="demo-header">
-        <span class="demo-icon">🎮</span>
-        <h2 class="demo-title">2. The Remote Control (@ViewChild)</h2>
-        <p class="demo-desc">Parent has direct, instant control over the child instance. No polite letter writing here!</p>
+        <span class="demo-icon">⏱️</span>
+        <h2 class="demo-title">2. The Stopwatch (@ViewChild)</h2>
+        <p class="demo-desc">Parent has <strong>direct control</strong>. It can reach into the child and call methods instantly.</p>
       </div>
       <div class="demo-content">
         <div class="remote-scene">
           
           <div class="remote-control">
-            <h4 style="color:white; margin-bottom:1rem; text-align:center;">PARENT REMOTE</h4>
-            <button class="remote-btn btn-shake" (click)="commandShake()">⚡ SHAKE</button>
-            <button class="remote-btn btn-happy" (click)="commandColor('happy')">🟢 BE HAPPY</button>
-            <button class="remote-btn btn-angry" (click)="commandColor('angry')">🔴 BE ANGRY</button>
-            <button class="remote-btn btn-reset" (click)="resetRobot()">↺ RESET</button>
+            <h4 style="color:white; margin-bottom:1rem; text-align:center;">PARENT CONTROLS</h4>
+            <div class="btn-group">
+                <button class="remote-btn btn-shake" (click)="startTimer()">▶ START</button>
+                <button class="remote-btn btn-angry" (click)="stopTimer()">⏸ STOP</button>
+            </div>
+            <button class="remote-btn btn-reset" (click)="resetTimer()">↺ RESET</button>
           </div>
 
           <div class="robot-container">
-            <div class="robot" 
-                 [class.shaking]="remoteState.isShaking"
-                 [style.filter]="remoteState.robotColor === 'happy' ? 'hue-rotate(240deg)' : remoteState.robotColor === 'angry' ? 'hue-rotate(0deg) saturate(3)' : 'grayscale(100%)'">
-              🤖
+            <!-- Reusing container for layout simplicity, but refactoring content -->
+            <div class="timer-display" [class.running]="timerState.isRunning">
+              {{ formattedTime }}
             </div>
             <div class="status-screen">
-              > {{ remoteState.statusMessage }}
+              > Child Component State
             </div>
           </div>
 
@@ -155,36 +155,38 @@
     <!-- DEMO 3: CONTENT CHILD -->
     <div class="demo-card">
       <div class="demo-header">
-        <span class="demo-icon">🎁</span>
-        <h2 class="demo-title">3. The Gift Box (@ContentChild)</h2>
-        <p class="demo-desc">Content Projection: The parent decides what goes <u>inside</u> the child's template.</p>
+        <span class="demo-icon">🖼️</span>
+        <h2 class="demo-title">3. The Picture Frame (@ContentChild)</h2>
+        <p class="demo-desc"><strong>Content Projection</strong>. The parent acts as a wrapper, and you insert content <em>inside</em> it.</p>
       </div>
       <div class="demo-content">
         <div class="gift-scene">
           
           <div class="sticker-sheet">
-            <h4 style="margin-bottom:1rem; text-align:center;">Choose Content</h4>
+            <h4 style="margin-bottom:1rem; text-align:center;">Select Content</h4>
             <div class="sticker-grid">
               <button 
-                *ngFor="let gift of availableGifts" 
+                *ngFor="let photo of availablePhotos" 
                 class="sticker-btn" 
-                [class.active]="giftState.selectedGift === gift"
-                (click)="wrapGift(gift)"
+                [class.active]="frameState.selectedPhoto === photo.id"
+                (click)="selectPhoto(photo.id)"
               >
-                {{ gift }}
+                {{ photo.emoji }} {{ photo.label }}
               </button>
             </div>
           </div>
 
           <div class="child-projector">
-            <h3>Child Component</h3>
-            <p style="font-size:0.8rem; color:#64748b;">I have a slot &lt;ng-content&gt;</p>
+            <h3>Parent Frame</h3>
+            <p style="font-size:0.8rem; color:#64748b;">&lt;ng-content&gt; is here</p>
             
-            <div class="ng-content-slot">
-              <div *ngIf="giftState.selectedGift" class="projected-content">
-                {{ giftState.selectedGift }}
-              </div>
-              <span *ngIf="!giftState.selectedGift" style="color: #cbd5e1;">(Empty Slot)</span>
+            <div class="frame-border">
+                <div class="ng-content-slot">
+                    <div *ngIf="frameState.selectedPhoto" class="projected-content" style="font-size: 3rem;">
+                        {{ getPhotoEmoji(frameState.selectedPhoto) }}
+                    </div>
+                    <span *ngIf="!frameState.selectedPhoto" style="color: #cbd5e1;">(Empty)</span>
+                </div>
             </div>
           </div>
 

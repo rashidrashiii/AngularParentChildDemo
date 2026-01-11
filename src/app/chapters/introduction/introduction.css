@@ -178,8 +178,10 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  height: 500px;
+  min-height: 500px; /* Changed from fixed height to min-height */
+  height: auto;
   position: relative;
+  padding-bottom: 2rem; /* Add some padding for when it grows */
 }
 
 .station {
@@ -195,7 +197,7 @@
 }
 
 .station.parent { border-color: #38bdf8; background-color: #f0f9ff; }
-.station.child { border-color: #facc15; background-color: #fefce8; margin-top: auto; }
+.station.child { border-color: #facc15; background-color: #fefce8; margin-top: 2rem; } /* Added margin-top for spacing when growing */
 
 .avatar {
   width: 60px;
@@ -220,6 +222,7 @@
   padding: 1rem;
   margin-top: 1rem;
   min-height: 60px;
+  /* Removed max-height/overflow to allow growth */
 }
 
 .inbox-title {
@@ -314,7 +317,7 @@
   100% { top: 15%; opacity: 0; transform: scale(0.5) translate(-50%, 0); }
 }
 
-/* --- DEMO 2: REMOTE CONTROL --- */
+/* --- DEMO 2: REMOTE CONTROL / TIMER --- */
 .remote-scene {
   display: flex;
   gap: 3rem;
@@ -327,27 +330,33 @@
   background: #1e293b;
   padding: 2rem;
   border-radius: 20px;
-  width: 200px;
+  width: 220px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .remote-btn {
   display: block;
   width: 100%;
   padding: 1rem;
-  margin-bottom: 1rem;
   border: none;
   border-radius: 8px;
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.1s;
+  color: white;
 }
 
 .remote-btn:active { transform: scale(0.95); }
-.btn-shake { background-color: #f59e0b; color: white; }
-.btn-happy { background-color: #10b981; color: white; }
-.btn-angry { background-color: #ef4444; color: white; }
-.btn-reset { background-color: #475569; color: white; margin-bottom: 0; }
+.btn-shake { background-color: #10b981; } /* Start - Green */
+.btn-happy { background-color: #10b981; }
+.btn-angry { background-color: #ef4444; } /* Stop - Red */
+.btn-reset { background-color: #475569; margin-bottom: 0; }
 
 .robot-container {
   display: flex;
@@ -355,20 +364,27 @@
   align-items: center;
 }
 
-.robot {
-  font-size: 8rem;
-  transition: all 0.3s ease;
+/* TIMER DISPLAY */
+.timer-display {
+    font-family: 'Courier New', monospace;
+    font-size: 5rem;
+    font-weight: bold;
+    color: #cbd5e1;
+    background: #0f172a;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    border: 4px solid #334155;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+    min-width: 320px;
+    text-align: center;
 }
 
-.robot.shaking {
-  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite;
-}
-
-@keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+.timer-display.running {
+    color: #38bdf8;
+    border-color: #38bdf8;
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 
 .status-screen {
@@ -378,14 +394,15 @@
   padding: 1rem;
   border-radius: 8px;
   margin-top: 1rem;
-  width: 200px;
+  width: 100%;
   font-size: 0.8rem;
-  min-height: 3rem;
+  min-height: 2.5rem;
   display: flex;
   align-items: center;
+  border: 1px solid #334155;
 }
 
-/* --- DEMO 3: GIFT BOX --- */
+/* --- DEMO 3: GIFT BOX / PICTURE FRAME --- */
 .gift-scene {
   display: flex;
   gap: 4rem;
@@ -399,62 +416,66 @@
   padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
-  width: 200px;
+  width: 220px;
 }
 
 .sticker-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .sticker-btn {
-  font-size: 2rem;
+  font-size: 1.1rem;
   background: #f1f5f9;
   border: 2px solid transparent;
   border-radius: 8px;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.75rem;
   transition: all 0.2s;
+  text-align: left;
 }
 
 .sticker-btn:hover { background: #e2e8f0; }
 .sticker-btn.active { border-color: #0ea5e9; background: #e0f2fe; }
 
 .child-projector {
-  background: #fdf4ff;
-  border: 2px solid #f0abfc;
+  background: #fdf4ff; /* pink tint base */
+  background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
+  border: 1px solid #f0abfc;
   border-radius: 16px;
   padding: 2rem;
-  width: 250px;
+  width: 300px;
   text-align: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.frame-border {
+    background: #78350f; /* Wood color */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    margin-top: 1rem;
 }
 
 .ng-content-slot {
-  background:  rgba(255,255,255,0.5);
-  border: 2px dashed #d946ef;
-  border-radius: 12px;
-  height: 150px;
+  background:  white;
+  border: 2px dashed #d6d3d1;
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
   position: relative;
+  overflow: hidden;
 }
 
 .projected-content {
-  font-size: 5rem;
   animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes popIn {
   0% { transform: scale(0); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
-}
-
-.gift-lid {
-  font-size: 2rem;
-  cursor: pointer;
 }
 
 /* Footer */
