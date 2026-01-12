@@ -138,6 +138,25 @@ ul {
   font-size: 0.8rem;
   color: var(--text-secondary);
   background-color: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.github-link {
+  color: #64748b; /* text-secondary equivalent */
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.github-link:hover {
+  color: #1e293b; /* primary-dark equivalent */
+  background-color: #e2e8f0;
+  transform: scale(1.1);
 }
 
 .sidebar-footer p {
