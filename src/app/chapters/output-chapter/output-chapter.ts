@@ -52,21 +52,21 @@ export class ChildItemComponent {
     }
   ];
 
-  // --- Demo 2: Payload (Fruit Selector) ---
-  selectedFruit = '🍒';
+  // --- Demo 2: Payload (Animal Selector) ---
+  selectedAnimal = '🐶';
   
-  fruitCodeTabs: CodeTab[] = [
+  animalCodeTabs: CodeTab[] = [
     {
       title: 'Parent HTML',
       language: 'html',
       code: `<!-- parent.component.html -->
 <div>
-   <h3>Selected: {{ selectedFruit }}</h3>
+   <h3>Selected: {{ selectedAnimal }}</h3>
    
    <!-- The $event variable allows access to the emitted data -->
-   <app-fruit-picker 
-      (picked)="selectedFruit = $event">
-   </app-fruit-picker>
+   <app-animal-picker 
+      (picked)="selectedAnimal = $event">
+   </app-animal-picker>
 </div>`,
     },
     {
@@ -75,13 +75,14 @@ export class ChildItemComponent {
       code: `import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-fruit-picker',
+  selector: 'app-animal-picker',
   template: \`
-    <button (click)="pick('🍎')">🍎</button>
-    <button (click)="pick('🍌')">🍌</button>
+    <button (click)="pick('🐶')">🐶</button>
+    <button (click)="pick('🐱')">🐱</button>
+    <button (click)="pick('🐰')">🐰</button>
   \`
 })
-export class FruitPickerComponent {
+export class AnimalPickerComponent {
   // Emitter that sends a string payload
   @Output() picked = new EventEmitter<string>();
 
@@ -157,11 +158,11 @@ export class VoterComponent {
   }
 
   // Demo 2 Logic
-  onFruitPicked(fruit: string) {
-    this.selectedFruit = fruit;
+  onAnimalPicked(animal: string) {
+    this.selectedAnimal = animal;
   }
-  resetFruit() {
-    this.selectedFruit = '🍒';
+  resetAnimal() {
+    this.selectedAnimal = '❓';
   }
 
   // Demo 3 Logic

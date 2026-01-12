@@ -65,16 +65,16 @@
     <app-interactive-demo 
       title="2. Sending Data ($event)" 
       description="The child passes specific data (a string) up to the parent using the $event variable."
-      [tabs]="fruitCodeTabs"
-      (reset)="resetFruit()">
+      [tabs]="animalCodeTabs"
+      (reset)="resetAnimal()">
       
       <div class="demo-layout">
         <div class="component-box child">
           <div class="box-label">Child (Picker)</div>
           <div class="fruit-buttons">
-            <button (click)="onFruitPicked('🍎')" class="fruit-btn">🍎</button>
-            <button (click)="onFruitPicked('🍌')" class="fruit-btn">🍌</button>
-            <button (click)="onFruitPicked('🍇')" class="fruit-btn">🍇</button>
+            <button (click)="onAnimalPicked('🐶')" class="fruit-btn">🐶</button>
+            <button (click)="onAnimalPicked('🐱')" class="fruit-btn">🐱</button>
+            <button (click)="onAnimalPicked('🐰')" class="fruit-btn">🐰</button>
           </div>
         </div>
 
@@ -86,7 +86,7 @@
         <div class="component-box parent">
           <div class="box-label">Parent</div>
           <div class="display-value">
-             <span class="big-fruit">{{ selectedFruit }}</span>
+             <span class="big-fruit">{{ selectedAnimal }}</span>
           </div>
         </div>
       </div>
