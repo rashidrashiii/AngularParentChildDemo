@@ -115,8 +115,8 @@ focusInput() {
       code: `<!-- parent.component.html -->
 <div class="control-panel">
   <h3>Parent Controls</h3>
-  <!-- We put a template reference variable (#timer) on the child tag -->
-  <app-stopwatch #timer></app-stopwatch>
+  <!-- We are querying by Component Class, so no #ref needed -->
+  <app-stopwatch></app-stopwatch>
 
   <div class="buttons">
     <button (click)="startChildTimer()">Start</button>

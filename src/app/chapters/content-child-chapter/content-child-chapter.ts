@@ -1,118 +1,119 @@
-import { Component, inject, ContentChild, AfterContentInit, OnInit, Input } from '@angular/core';
+import { Component, inject, Input, ContentChild, AfterContentInit, AfterContentChecked, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ChapterService } from '../../services/chapter';
 import { InteractiveDemoComponent } from '../../components/interactive-demo/interactive-demo';
 import { CodeTab } from '../../components/code-viewer/code-viewer';
 
-// --- Helper: Child Content (The Badge) ---
+// --- Helper: The Content (Sticky Note) ---
 @Component({
-  selector: 'app-user-badge',
+  selector: 'app-sticky-note',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="user-badge" [class.admin]="role === 'admin'">
-       <span class="avatar">{{ role === 'admin' ? '🛡️' : '👤' }}</span>
-       <span class="name">{{ name }}</span>
-       <span class="role-tag" *ngIf="role === 'admin'">ADMIN</span>
+    <div class="sticky-note">
+       📌 {{ text }}
     </div>
   `,
   styles: [`
-    .user-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        background: #f1f5f9;
-        border-radius: 50px;
-        border: 1px solid #cbd5e1;
-        color: #334155;
-        font-weight: 500;
-    }
-    .user-badge.admin {
-        background: #fffbeb; /* yellow-50 */
-        border-color: #fcd34d; /* yellow-300 */
-        color: #b45309; /* yellow-700 */
-    }
-    .role-tag {
-        font-size: 0.6rem;
-        background: #fcd34d;
-        color: #78350f;
-        padding: 0.1rem 0.3rem;
+    .sticky-note {
+        background: #fef3c7; /* yellow-100 */
+        color: #92400e; /* yellow-800 */
+        padding: 1rem;
         border-radius: 4px;
-        font-weight: bold;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        font-weight: 500;
+        border: 1px solid #fcd34d;
+        display: inline-block;
     }
   `]
 })
-export class UserBadgeComponent {
-  @Input() name = 'Guest';
-  @Input() role: 'user' | 'admin' = 'user';
+export class StickyNoteComponent {
+  @Input() text = 'Buy Milk';
+  @Input() urgent = false; // The Parent (Board) will read this!
 }
 
-// --- Helper: Parent Container (The Card) ---
+// --- Helper: The Container (Notice Board) ---
 @Component({
-  selector: 'app-profile-card',
+  selector: 'app-notice-board',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="profile-card" [class.gold-border]="role === 'admin'">
-       <div class="card-header">
-         User Profile
+    <div class="notice-board" [class.alert-mode]="isUrgent">
+       <div class="board-header">
+         {{ isUrgent ? '⚠️ URGENT NOTICE' : '📋 Community Board' }}
        </div>
-       <div class="card-body">
-         <!-- We project the badge here -->
+       <div class="board-content">
+         <!-- The note is projected here -->
          <ng-content></ng-content>
-       </div>
-       <div class="card-footer" *ngIf="role === 'admin'">
-          👑 Gold Member Benefits Active
        </div>
     </div>
   `,
   styles: [`
-    .profile-card {
-      background: white;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
+    .notice-board {
+      background: #f0f9ff; /* sky-50 */
+      border: 4px solid #bae6fd; /* sky-200 */
+      border-radius: 8px;
       overflow: hidden;
       width: 100%;
+      min-width: 280px;
       transition: all 0.3s;
     }
-    .profile-card.gold-border {
-        border-color: #f59e0b; /* Amber 500 */
-        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
-    }
-    .card-header {
-        background: #f8fafc;
-        padding: 0.75rem 1rem;
-        font-size: 0.8rem;
+    .board-header {
+        background: #bae6fd;
+        padding: 0.75rem;
+        color: #0369a1; /* sky-700 */
         font-weight: bold;
-        color: #64748b;
-        border-bottom: 1px solid #e2e8f0;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
-    .card-body {
-        padding: 1.5rem;
+    .board-content {
+        padding: 2rem;
         display: flex;
         justify-content: center;
+        min-height: 100px;
+        align-items: center;
     }
-    .card-footer {
-        background: #fffbeb;
-        color: #b45309;
-        font-size: 0.75rem;
-        padding: 0.5rem;
-        text-align: center;
-        border-top: 1px solid #fef3c7;
+
+    /* Alert Mode Styles */
+    .notice-board.alert-mode {
+        border-color: #fca5a5; /* red-300 */
+        background: #fef2f2; /* red-50 */
+        animation: pulse 2s infinite;
+    }
+    .notice-board.alert-mode .board-header {
+        background: #fca5a5;
+        color: #991b1b; /* red-800 */
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
     }
   `]
 })
-export class ProfileCardComponent implements AfterContentInit {
-  // Query for the projected UserBadgeComponent
-  @ContentChild(UserBadgeComponent) badge?: UserBadgeComponent;
-  role = 'user';
+export class NoticeBoardComponent implements AfterContentInit, AfterContentChecked {
+  // Query for the projected Sticky Note
+  @ContentChild(StickyNoteComponent) note!: StickyNoteComponent;
+  
+  isUrgent = false;
 
   ngAfterContentInit() {
-    // ContentChild is queryable here
-    if (this.badge) {
-        this.role = this.badge.role;
+    this.updateUrgency();
+  }
+
+  ngAfterContentChecked() {
+    // React to changes in the projected content (e.g., if parent toggles 'urgent')
+    this.updateUrgency();
+  }
+
+  private updateUrgency() {
+    if (this.note) {
+      if (this.isUrgent !== this.note.urgent) {
+        this.isUrgent = this.note.urgent;
+      }
     }
   }
 }
@@ -154,7 +155,7 @@ export class DemoCardComponent {}
 // --- Main Chapter Component ---
 @Component({
   selector: 'app-content-child-chapter',
-  imports: [CommonModule, RouterLink, InteractiveDemoComponent, ProfileCardComponent, UserBadgeComponent, DemoCardComponent],
+  imports: [CommonModule, RouterLink, InteractiveDemoComponent, NoticeBoardComponent, StickyNoteComponent, DemoCardComponent],
   templateUrl: './content-child-chapter.html',
   styleUrl: './content-child-chapter.css'
 })
@@ -194,49 +195,62 @@ export class ContentChildChapterComponent implements OnInit {
     }
   ];
 
-  // --- Demo 2: Profile (ContentChild) ---
-  currentUser = 'Alice';
-  currentRole: 'user' | 'admin' = 'user';
+  // --- Demo 2: The Urgent Note (ContentChild) ---
+  noteMessage = 'Meeting at 5 PM';
+  isNoteUrgent = false;
 
-  toggleRole() {
-      this.currentRole = this.currentRole === 'admin' ? 'user' : 'admin';
+  toggleUrgent() {
+      this.isNoteUrgent = !this.isNoteUrgent;
   }
 
-  changeUser() {
-      this.currentUser = this.currentUser === 'Alice' ? 'Bob' : 'Alice';
+  changeMessage() {
+      const msgs = ['Buy Groceries', 'Call Mom', 'Fix Bug #123', 'Office Party'];
+      this.noteMessage = msgs[Math.floor(Math.random() * msgs.length)];
   }
 
-  profileCodeTabs: CodeTab[] = [
+  noteCodeTabs: CodeTab[] = [
     {
       title: 'Parent HTML',
       language: 'html',
       code: `<!-- parent.component.html -->
-<app-profile-card>
-   <!-- We project a UserBadge component inside -->
-   <app-user-badge 
-      [name]="currentUser" 
-      [role]="currentRole">
-   </app-user-badge>
-</app-profile-card>`,
+<app-notice-board>
+   <!-- We project a Sticky Note inside the Board -->
+   <app-sticky-note 
+      [text]="noteMessage" 
+      [urgent]="isNoteUrgent">
+   </app-sticky-note>
+</app-notice-board>`,
     },
     {
        title: 'Child TS',
        language: 'typescript',
-       code: `import { Component, ContentChild, AfterContentInit } from '@angular/core';
-import { UserBadgeComponent } from './user-badge.component';
+       code: `import { Component, ContentChild, AfterContentInit, AfterContentChecked } from '@angular/core';
+import { StickyNoteComponent } from './sticky-note.component';
 
 @Component({
-  selector: 'app-profile-card',
-  templateUrl: './profile-card.component.html'
+  selector: 'app-notice-board',
+  // ... template ...
 })
-export class ProfileCardComponent implements AfterContentInit {
-  // Query for the projected content (ContentChild)
-  @ContentChild(UserBadgeComponent) 
-  badge!: UserBadgeComponent;
+export class NoticeBoardComponent implements AfterContentInit, AfterContentChecked {
+  // 1. Query the projected content using @ContentChild
+  @ContentChild(StickyNoteComponent) 
+  note!: StickyNoteComponent;
+
+  isUrgent = false;
 
   ngAfterContentInit() {
-    // Available after content projection is finished
-    console.log('Projected badge role:', this.badge.role);
+    this.checkUrgency();
+  }
+
+  ngAfterContentChecked() {
+    // 2. Keep checking if the projected note changes!
+    this.checkUrgency();
+  }
+
+  checkUrgency() {
+    if (this.note) {
+        this.isUrgent = this.note.urgent;
+    }
   }
 }`,
     }

@@ -48,51 +48,51 @@
     </app-interactive-demo>
   </div>
 
-  <!-- EXAMPLE 2: Interactive ContentChild -->
   <div class="example-block">
     <app-interactive-demo 
-      title="2. The Profile Card" 
-      description="The Profile Card (Parent) inspects the User Badge (Child) you put inside it. If it sees an Admin, it upgrades the style!"
-      [tabs]="profileCodeTabs">
+      title="2. Accessing Projected Data" 
+      description="The Notice Board checks the Sticky Note inside it. If you mark the note as URGENT, the Board changes color!"
+      [tabs]="noteCodeTabs">
       
       <div class="demo-layout">
-        <div class="component-box parent" style="min-width: 300px;">
+        <div class="component-box parent" style="min-width: 320px;">
           <div class="box-label">Parent Usage</div>
           
            <div class="controls-toolbar" style="margin-bottom:1rem; display:flex; gap:0.5rem;">
-              <button (click)="changeUser()" class="control-btn primary">
-                 Change Name ({{ currentUser }})
+              <button (click)="changeMessage()" class="control-btn primary">
+                 ✏️ Change Message
               </button>
-              <button (click)="toggleRole()" class="control-btn" 
-                [class.warning]="currentRole === 'user'"
-                [class.success]="currentRole === 'admin'">
-                 Toggle Role ({{ currentRole | uppercase }})
+              <button (click)="toggleUrgent()" class="control-btn" 
+                [class.warning]="!isNoteUrgent"
+                [class.danger]="isNoteUrgent">
+                 {{ isNoteUrgent ? '🛑 Mark Normal' : '⚠️ Mark Urgent' }}
               </button>
            </div>
            
            <div class="profile-preview">
-              <app-profile-card>
-                  <!-- Projected Child -->
-                  <app-user-badge 
-                      [name]="currentUser" 
-                      [role]="currentRole">
-                  </app-user-badge>
-              </app-profile-card>
+              <!-- Notice Board Container -->
+              <app-notice-board>
+                  <!-- Projected Sticky Note -->
+                  <app-sticky-note 
+                      [text]="noteMessage" 
+                      [urgent]="isNoteUrgent">
+                  </app-sticky-note>
+              </app-notice-board>
            </div>
 
         </div>
 
         <div class="connection-line">
            <div class="down-arrow">↓</div>
-           <span class="binding-syntax">Projection + Query</span>
+           <span class="binding-syntax">@ContentChild Read</span>
         </div>
         
         <div class="description-side">
-            <p><strong>Logic Flow:</strong></p>
+            <p><strong>How it works:</strong></p>
             <ol>
-                <li>You project <code>&lt;app-user-badge&gt;</code> into the Card.</li>
-                <li>The Card uses <code>@ContentChild</code> to read the <code>role</code> property.</li>
-                <li>If <code>role === 'admin'</code>, the Card adds a gold border and footer!</li>
+                <li>You put a <code>&lt;app-sticky-note&gt;</code> inside the Board.</li>
+                <li>The Board uses <code>@ContentChild</code> to find the note.</li>
+                <li>It reads <code>note.urgent</code>. If true, it turns RED!</li>
             </ol>
         </div>
 
