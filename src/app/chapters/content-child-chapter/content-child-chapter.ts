@@ -222,6 +222,20 @@ export class ContentChildChapterComponent implements OnInit {
 </app-notice-board>`,
     },
     {
+      title: 'Child HTML',
+      language: 'html',
+      code: `<!-- notice-board.component.html -->
+<div class="notice-board" [class.alert-mode]="isUrgent">
+   <div class="board-header">
+     {{ isUrgent ? '⚠️ URGENT NOTICE' : '📋 Community Board' }}
+   </div>
+   <div class="board-content">
+     <!-- The note is projected here -->
+     <ng-content></ng-content>
+   </div>
+</div>`,
+    },
+    {
        title: 'Child TS',
        language: 'typescript',
        code: `import { Component, ContentChild, AfterContentInit, AfterContentChecked } from '@angular/core';
